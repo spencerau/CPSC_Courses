@@ -27,6 +27,7 @@ void SpeakerView::readFile(string input) {
             stack->push(num);
         }
         cout << "Column " << i << ": " << stack->size() << " people can see." << endl;
+        i++;
         delete stack;
         stack = new MonoStack<double>(1, 'd');
     }
