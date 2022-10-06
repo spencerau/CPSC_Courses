@@ -20,7 +20,7 @@ public:
 	void printStack();
 
 private:
-	T* stackArr;
+	T* stack;
 	int count; // number of things in stack
 	int max; // most things we can hold
 	int top;
@@ -33,7 +33,7 @@ MonoStack<T>::MonoStack(){ //O(1)
 	top = -1;
 	count = 0;
 	max = 0;
-	stackArr = NULL;
+	stack = NULL;
 }
 
 /*
@@ -45,13 +45,13 @@ MonoStack<T>::MonoStack(int iSize, char o){ //O(1)
 	top = -1;
 	count = 0;
 	max = iSize;
-	stackArr = new T[max];
+	stack = new T[max];
 	this->mono = o;
 }
 
 template <typename T>
 MonoStack<T>::~MonoStack(){ //O(1)
-	delete[] stackArr;
+	delete[] stack;
 }
 
 template <typename T>
@@ -83,37 +83,39 @@ if (isFull()) { // resize the array
     T* temp = new T[2*max];
     for(int i = 0; i < max; ++i){
 
-      	temp[i] = stackArr[i];
+      	temp[i] = stack[i];
     }
 	max *= 2;
 }
 //max *= 2;
 int i = count-1;
 if (mono == 'i') {
-	while (stackArr[i] > c) {
+	while (stack[i] > c) {
 		pop();
 		count--;
 	}
 } else if (mono == 'd') {
-	while (stackArr[i] < c) {
+	while (stack[i] < c) {
 		pop();
 		count--;
 	}
 }
 
-stackArr[++top] = c;
+stack[++top] = c;
 ++count;
 }
 
 template <typename T>
 T MonoStack<T>::pop() { //O(1) better tell user to check if empty first
+	if (isEmpty()) return NULL;
 	--count;
-	return stackArr[top--];
+	return stack[top--];
 }
 
 template <typename T>
 T MonoStack<T>::peek() { //O(1) what about if empty?
-  	return stackArr[top];
+	if (isEmpty()) return NULL;
+  	return stack[top];
 }
 
 template <typename T>

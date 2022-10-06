@@ -6,11 +6,13 @@
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
+#include <sstream>
+
 using namespace std;
 
 class SpeakerView {
 public:
-    SpeakerView();
+    SpeakerView(int size, char o);
     ~SpeakerView();
     void readFile(string fileName);
 
