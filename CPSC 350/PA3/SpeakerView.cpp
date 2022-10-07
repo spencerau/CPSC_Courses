@@ -33,6 +33,7 @@ void SpeakerView::readFile(string input) {
     // current column to check
     int j = 0;
     // i is the current column
+    getCol(input);
     for (int i = 0; i < col; i++) {
         while (getline(read, line)) {
             istringstream ss(line);
