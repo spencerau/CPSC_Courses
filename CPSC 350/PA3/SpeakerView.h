@@ -15,10 +15,11 @@ public:
     SpeakerView(int size, char o);
     ~SpeakerView();
     void readFile(string fileName);
-
+    void getCol(string input);
 private:
     MonoStack<double> *stack;
     //string filename;
+    int col;
 };
 
 

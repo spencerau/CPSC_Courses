@@ -92,11 +92,13 @@ int i = count-1;
 if (mono == 'i') {
 	while (stack[i] > c) {
 		pop();
+		i--;
 		count--;
 	}
 } else if (mono == 'd') {
 	while (stack[i] < c) {
 		pop();
+		i--;
 		count--;
 	}
 }
