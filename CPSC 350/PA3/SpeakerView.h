@@ -7,6 +7,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <string>
+#include "MStack.h"
 
 using namespace std;
 
@@ -18,6 +20,7 @@ public:
     void getCol(string input);
 private:
     MonoStack<double> *stack;
+    //MStack<double> *stack;
     //string filename;
     int col;
 };

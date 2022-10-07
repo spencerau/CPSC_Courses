@@ -81,34 +81,34 @@ that are smaller than X. All other operations stay the same.
 */
 template <typename T>
 void MonoStack<T>::push(T c){ //O(max) linear
-if (isFull()) { // resize the array
-    T* temp = new T[2*max];
-    for(int i = 0; i < max; ++i){
-
-      	temp[i] = stack[i];
-    }
-	max *= 2;
-}
-//max *= 2;
-int i = count-1;
-if (mono == 'i') {
-	while (stack[i] > c) {
-		pop();
-		i--;
-		count--;
-		top--;
+	if (isFull()) { // resize the array
+		T* temp = new T[2*max];
+		for(int i = 0; i < max; ++i){
+			temp[i] = stack[i];
+		}
+		max *= 2;
+		stack = temp;
 	}
-} else if (mono == 'd') {
-	while (stack[i] < c) {
-		pop();
-		i--;
-		count--;
-		top--;
+	//max *= 2;
+	int i = count-1;
+	if (mono == 'i') {
+		while (stack[i] > c) {
+			pop();
+			i--;
+			count--;
+			top--;
+		}
+	} else if (mono == 'd') {
+		while (stack[i] < c) {
+			pop();
+			i--;
+			count--;
+			top--;
+		}
 	}
-}
 
-stack[++top] = c;
-++count;
+	stack[++top] = c;
+	++count;
 }
 
 template <typename T>
@@ -124,11 +124,13 @@ T MonoStack<T>::peek() { //O(1) what about if empty?
   	return stack[top];
 }
 
+
 template <typename T>
 void MonoStack<T>::printStack() {
 	for (int i = top; i > -1; i--) {
 		cout << stack[i] << endl; 
 	}
 } 
+
 
 #endif

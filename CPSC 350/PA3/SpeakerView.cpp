@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <string>
+#include "MStack.h"
 
 using namespace std;
 
@@ -30,27 +32,27 @@ void SpeakerView::readFile(string input) {
     double num;
     string line;
     this->col = 0;
-    // current column to check
-    int j = 0;
     // i is the current column
     getCol(input);
     for (int i = 0; i < col; i++) {
         while (getline(read, line)) {
+            // current column to check
+            int j = 0;
             istringstream ss(line);
             while (ss >> num) {
                 if (i == j) stack->push(num);
+                j++;
             }
         }
-        j++;
         cout << "Column " << i << ": " << stack->size() << " people can see. Their heights are: ";
         while (!stack->isEmpty()) {
-        cout << stack->pop() << ", ";
+            cout << stack->pop() << ", ";
+        }
         // reset read stream
         read.clear();
         read.seekg(0);
     }
     cout << "." << endl;
-    }
     /*
     while (getline(read, line)) {
         istringstream ss(line);
