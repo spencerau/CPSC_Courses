@@ -36,6 +36,8 @@ MonoStack<T>::MonoStack(){ //O(1)
 	stack = NULL;
 }
 
+//#endif
+
 /*
 our constructor for the stack should take the initial size, as well as a character, o, as parameters. If o==’i’, the stack should be monotonically increasing. 
 If o==’d’, the stack should be monotonically decreasing.
@@ -94,12 +96,14 @@ if (mono == 'i') {
 		pop();
 		i--;
 		count--;
+		top--;
 	}
 } else if (mono == 'd') {
 	while (stack[i] < c) {
 		pop();
 		i--;
 		count--;
+		top--;
 	}
 }
 
@@ -122,9 +126,9 @@ T MonoStack<T>::peek() { //O(1) what about if empty?
 
 template <typename T>
 void MonoStack<T>::printStack() {
-	for (int i = 0; i < count; i++) {
-		cout << "[ " << 
+	for (int i = top; i > -1; i--) {
+		cout << stack[i] << endl; 
 	}
-}
+} 
 
 #endif
