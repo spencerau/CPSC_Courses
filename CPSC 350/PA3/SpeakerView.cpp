@@ -83,16 +83,13 @@ void SpeakerView::readFile(string input) {
             istringstream ss(line);
             while (ss >> num) {
                 if (i == j) {
-                    //stack->printStack();
                     stack->push(num);
                 }
                 j++;
             }
         }
         cout << "Column " << i << ": " << stack->size() << " people can see. Their heights are: ";
-        //cout << endl;
         while (!stack->isEmpty()) {
-            //stack->printStack();
             cout << stack->pop();
             if (stack->size() != 0) cout << ", ";
             else if (stack->size() == 0) cout << " inches.";

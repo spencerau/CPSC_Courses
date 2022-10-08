@@ -47,8 +47,6 @@ public:
     void getCol(string input);
 private:
     MonoStack<double> *stack;
-    //MStack<double> *stack;
-    //string filename;
     int col;
 };
 

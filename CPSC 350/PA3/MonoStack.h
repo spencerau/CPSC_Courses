@@ -136,7 +136,6 @@ void MonoStack<T>::push(T c){ //O(max) linear
 	}
 	//for (int i = 0; i < size(); i++) {
 		if (mono == 'i') {
-			//cout << stack[top] << " > " << c << endl;
 			if (stack[top] > c) {
 				//pop();
 				stack[++top] = c;
@@ -144,7 +143,6 @@ void MonoStack<T>::push(T c){ //O(max) linear
 			}
 			//else pop();
 		} else if (mono == 'd') {
-			//cout << stack[top] << " < " << c << endl;
 			if (stack[top] < c) {
 				//pop();
 				stack[++top] = c;
