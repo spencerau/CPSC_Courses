@@ -95,15 +95,11 @@ void MonoStack<T>::push(T c){ //O(max) linear
 		while (stack[i] > c) {
 			pop();
 			i--;
-			count--;
-			top--;
 		}
 	} else if (mono == 'd') {
 		while (stack[i] < c) {
 			pop();
 			i--;
-			count--;
-			top--;
 		}
 	}
 
@@ -113,24 +109,39 @@ void MonoStack<T>::push(T c){ //O(max) linear
 
 template <typename T>
 T MonoStack<T>::pop() { //O(1) better tell user to check if empty first
-	if (isEmpty()) return NULL;
+	if (isEmpty()) return '\0';
 	--count;
 	return stack[top--];
 }
 
 template <typename T>
 T MonoStack<T>::peek() { //O(1) what about if empty?
-	if (isEmpty()) return NULL;
+	if (isEmpty()) return '\0';
   	return stack[top];
 }
 
 
 template <typename T>
 void MonoStack<T>::printStack() {
-	for (int i = top; i > -1; i--) {
+	if (isEmpty()) {
+		cout << "Stack is Empty" << endl;
+		return;
+	}
+	for (int i = 0; i < size(); i++) {
 		cout << stack[i] << endl; 
 	}
 } 
 
+/*
+int main() {
+	//MonoStack *stack = new MonoStack(1, 'd');
+	MonoStack<double> *stack = new MonoStack<double>(1, 'd');
+	stack->push(1);
+	stack->push(2);
+	stack->push(3);
+	stack->push(2);
+	return 1;
+}
+*/
 
 #endif

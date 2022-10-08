@@ -71,3 +71,8 @@ void SpeakerView::readFile(string input) {
     */
     read.close();
 }
+
+int main() {
+    SpeakerView *speaker = new SpeakerView(1, 'd');
+    speaker->readFile("test.txt");
+}
