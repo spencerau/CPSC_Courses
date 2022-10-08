@@ -120,7 +120,8 @@ A monotonic stack is a stack whose elements appear in either monotonically incre
 Duplicate values are not allowed in the stack. As with a traditional stack, a monotonic stack is a LIFO data structure. 
 The only difference is the push function, which must ensure that the values remain in monotonically increasing or decreasing order. 
 This means that for a monotonically increasing stack, to push a value of X on the stack, we must first pop and discard all values in the stack that are 
-larger than X. Similarly, for a monotonically decreasing stack, to push a value of X on the stack, we must first pop and discard all values in the stack 
+larger than X. 
+Similarly, for a monotonically decreasing stack, to push a value of X on the stack, we must first pop and discard all values in the stack 
 that are smaller than X. All other operations stay the same.
 */
 template <typename T>
@@ -133,22 +134,28 @@ void MonoStack<T>::push(T c){ //O(max) linear
 		max *= 2;
 		stack = temp;
 	}
-	//max *= 2;
-	int i = count-1;
-	if (mono == 'i') {
-		while (stack[i] > c) {
-			pop();
-			i--;
+	//for (int i = 0; i < size(); i++) {
+		if (mono == 'i') {
+			//cout << stack[top] << " > " << c << endl;
+			if (stack[top] > c) {
+				//pop();
+				stack[++top] = c;
+				++count;
+			}
+			//else pop();
+		} else if (mono == 'd') {
+			//cout << stack[top] << " < " << c << endl;
+			if (stack[top] < c) {
+				//pop();
+				stack[++top] = c;
+				++count;
+			}
+			//else pop();
 		}
-	} else if (mono == 'd') {
-		while (stack[i] < c) {
-			pop();
-			i--;
-		}
+	if (size() == 0) {
+		stack[++top] = c;
+		++count;
 	}
-
-	stack[++top] = c;
-	++count;
 }
 
 // Removes the top element at stack[top] and returns that element; decrements top and count
@@ -176,9 +183,12 @@ void MonoStack<T>::printStack() {
 		cout << "Stack is Empty" << endl;
 		return;
 	}
+	cout << "Stack: [";
 	for (int i = 0; i < size(); i++) {
-		cout << stack[i] << endl; 
+		cout << stack[i];
+		if (i != top) cout << ", "; 
 	}
+	cout << "]" << endl;
 } 
 
 

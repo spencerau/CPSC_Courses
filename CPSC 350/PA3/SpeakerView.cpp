@@ -37,11 +37,11 @@ using namespace std;
 /*
 Constructor that takes an int size that represents initial size and char o 
 that is a flag for whether it is monotonically increasing or decreasing. Initializes a new MonoStack<double>
-for stack and sets col to 0
+for stack and sets col to -1
 */
 SpeakerView::SpeakerView(int size, char o) {
     this->stack = new MonoStack<double>(size, o);
-    this->col = 0;
+    this->col = -1;
 }
 
 /*
@@ -74,7 +74,6 @@ void SpeakerView::readFile(string input) {
     ifstream read(input);
     double num;
     string line;
-    this->col = 0;
     // i is the current column
     getCol(input);
     for (int i = 0; i < col; i++) {
@@ -83,23 +82,26 @@ void SpeakerView::readFile(string input) {
             int j = 0;
             istringstream ss(line);
             while (ss >> num) {
-                if (i == j) stack->push(num);
+                if (i == j) {
+                    //stack->printStack();
+                    stack->push(num);
+                }
                 j++;
             }
         }
         cout << "Column " << i << ": " << stack->size() << " people can see. Their heights are: ";
+        //cout << endl;
         while (!stack->isEmpty()) {
-            cout << stack->pop() << ", ";
+            //stack->printStack();
+            cout << stack->pop();
+            if (stack->size() != 0) cout << ", ";
+            else if (stack->size() == 0) cout << " inches.";
         }
+        cout << endl;
         // reset read stream
         read.clear();
         read.seekg(0);
     }
     cout << "." << endl;
     read.close();
-}
-
-int main() {
-    SpeakerView *speaker = new SpeakerView(1, 'd');
-    speaker->readFile("test.txt");
 }
