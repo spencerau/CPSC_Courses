@@ -61,7 +61,7 @@ int Customer::getCash() {
 }
 
 Customer Customer::getPrev() {
-    return (Customer)prev;
+    //return (Customer)prev;
 }
 
 #endif

@@ -18,6 +18,8 @@ public:
 private:
     ListQueue<Window> *office;
     char type;
+    int maxWindows;
+    int occupWindows;
 };
 
 Office::Office(int size, char type) {
@@ -26,6 +28,8 @@ Office::Office(int size, char type) {
         Window window(type);//= new Window(type);
         office->add(window);
     }
+    maxWindows = size;
+    occupWindows = 0;
 }
 
 Office::~Office() {
