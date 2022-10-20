@@ -9,20 +9,34 @@ using namespace std;
 
 Office::Office(int size, char type) {
     this->type = type;
-    for (int i = 0; i < size; i++) {
-        Window window(type);//= new Window(type);
-        office->add(window);
-    }
+    this->line = new ListQueue<Customer*>();
+    this->attending = new ListQueue<Customer*>();
     maxWindows = size;
     occupWindows = 0;
 }
 
 Office::~Office() {
-    delete office;
+    delete line;
+    delete attending;
 }
 
-void Office::passTime() {
-    for (int i = 0; i < office->size(); i++) {
-        //Windo
+// this is when the student goes up to the window and does their crap
+void Office::attendStudent() {
+    if (occupWindows == maxWindows) return;
+    occupWindows++;
+    attending->add(line->remove());
+}
+
+// this is when a student lines up in the back of the line; it calls attendStudent() if any windows are open
+void Office::lineUp(Customer *student) {
+    student->popOrder();
+    line->add(student);
+    while (occupWindows < maxWindows) {
+        attendStudent();
     }
+}
+
+
+void Office::passTime() {
+    
 }

@@ -7,32 +7,37 @@ using namespace std;
 
 class Customer {
 public:
-    Customer(int finAid, int regist, int cash);
+    Customer(int finAid, int regist, int cash, ListQueue<char> *order);
     ~Customer();
     void passTime();
     int getWait();
     int getFinAid();
     int getRegist();
     int getCash();
-    Customer getPrev();
-    Customer getNext();
+    Customer* getPrev();
+    Customer* getNext();
+    char pop();
+    char peek();
+    void popOrder();
 private:
     int wait;
     int finAid;
     int regist;
     int cash;
 
+    ListQueue<char> *order;
     Customer *prev;
     Customer *next;
 };
 
-Customer::Customer(int finAid, int regist, int cash) {
+Customer::Customer(int finAid, int regist, int cash, ListQueue<char> *order) {
     this->wait = 0;
     this->finAid = finAid;
     this->regist = regist;
     this->cash = cash;
     this->prev = NULL;
     this->next = NULL;
+    this->order = order;
 }
 
 Customer::~Customer() {
@@ -60,8 +65,24 @@ int Customer::getCash() {
     return cash;
 }
 
-Customer Customer::getPrev() {
-    //return (Customer)prev;
+Customer* Customer::getPrev() {
+    return prev;
+}
+
+Customer* Customer::getNext() {
+    return next;
+}
+
+char Customer::pop() {
+    return order->remove();
+}
+
+char Customer::peek() {
+    return order->peek();
+}
+
+void Customer::popOrder() {
+    order->remove();
 }
 
 #endif

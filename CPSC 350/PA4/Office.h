@@ -13,12 +13,17 @@ class Office {
 public:
     Office(int size, char type);
     ~Office();
+    void attendStudent();
     void passTime();
+    void lineUp(Customer *student);
 private:
-    ListQueue<Window> *office;
     char type;
     int maxWindows;
     int occupWindows;
+
+    ListQueue<Customer*> *line;
+    ListQueue<Customer*> *attending;
+    ListQueue<Window*> *office;
 };
 
 #endif

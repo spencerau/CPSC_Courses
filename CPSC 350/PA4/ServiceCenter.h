@@ -13,6 +13,7 @@ public:
     ~ServiceCenter();
     void readFile(string filename);
     void passTime();
+    void readLine(string line);
 private:
     Office *cashier;
     Office *finAid;
