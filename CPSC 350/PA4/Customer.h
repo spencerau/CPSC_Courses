@@ -19,6 +19,7 @@ public:
     char pop();
     char peek();
     void popOrder();
+    char getDest();
 private:
     int wait;
     int finAid;
@@ -83,6 +84,10 @@ char Customer::peek() {
 
 void Customer::popOrder() {
     order->remove();
+}
+
+char Customer::getDest() {
+    return order->peek();
 }
 
 #endif
