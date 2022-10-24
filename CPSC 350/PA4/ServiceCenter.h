@@ -12,12 +12,13 @@ public:
     ServiceCenter(string filename);
     ~ServiceCenter();
     void readFile(string filename);
-    void passTime();
+    void passTime(int time);
     Customer* readLine(string line);
 private:
     Office *cashier;
     Office *finAid;
     Office *registrar;
+    int students;
 };
 
 #endif

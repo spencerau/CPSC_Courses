@@ -16,10 +16,13 @@ public:
     void attendStudent();
     void passTime();
     void lineUp(Customer *student);
+    Customer* getAttending();
+    //bool getOccupied();
 private:
     char type;
     int maxWindows;
     int occupWindows;
+    bool occupied;
 
     ListQueue<Customer*> *line;
     ListQueue<Customer*> *attending;

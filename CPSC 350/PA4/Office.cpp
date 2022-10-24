@@ -18,6 +18,7 @@ Office::Office(int size, char type) {
 Office::~Office() {
     delete line;
     delete attending;
+    delete office;
 }
 
 // this is when the student goes up to the window and does their crap

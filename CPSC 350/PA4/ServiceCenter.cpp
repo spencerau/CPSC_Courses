@@ -2,12 +2,14 @@
 #include "Office.h"
 #include "ServiceCenter.h"
 #include <fstream>
+#include <sstream>
+#include <string>
 
 using namespace std;
 
 ServiceCenter::ServiceCenter(string filename) {
     readFile(filename);
-
+    students = 0;
 }
 
 ServiceCenter::~ServiceCenter() {
@@ -29,56 +31,48 @@ void ServiceCenter::readFile(string filename) {
     // at time 3, 1 student arrives
     // student 3 needs 4 at regist, 2 at cash, 6 at fin aid
 
-    this->registrar = new Office(2, 'r');
-    this->cashier = new Office(3, 'c');
-    this->finAid = new Office(1, 'f');    
+    int windows;
+    read >> windows;
+    this->registrar = new Office(windows, 'r');
+    cout << "The Registrar's Office has " << windows << "windows." << endl;
+    read >> windows;
+    this->cashier = new Office(windows, 'c');
+    cout << "The Cashier's Office has " << windows << "windows." << endl;
+    read >> windows;
+    this->finAid = new Office(windows, 'f');    
+    cout << "The Financial Aid Office has " << windows << "windows." << endl;
 
-    string line; //= read.getline();
-    Customer *student = readLine(line);
+    string line;
+    int i = 0;
+    while (getline(read, line)) {
+        int time = stoi(line);
+        passTime(time);
+        cout << "Time: " << time << endl;
 
-    switch (student->getDest()) {
-        case 'f':
-            finAid->lineUp(student);
-            break;
-        case 'r':
-            registrar->lineUp(student);
-            break;
-        case 'c':
-            cashier->lineUp(student);
-            break;
+        getline(read, line);
+        int numStudents = stoi(line);
+        cout << "The will be " << numStudents << " students joining the Queue at this time." << endl;
+
+        for (int i = 0; i < numStudents; i++) {
+            getline(read, line);
+            Customer *student = readLine(line);
+            //cout << "Student " << students << " "
+            switch (student->getDest()) {
+                case 'f':
+                    finAid->lineUp(student);
+                    break;
+                case 'r':
+                    registrar->lineUp(student);
+                    break;
+                case 'c':
+                    cashier->lineUp(student);
+                    break;
+            }
+
+            registrar->lineUp(readLine(line));
+        }
     }
-
-    registrar->lineUp(readLine(line));
-
-
-    // use strchr(string, char);
     // this block of bullshit is temporary because File I/O is some big brain shit
-
-    ListQueue<char> *order1 = new ListQueue<char>;
-    order1->add('r');
-    order1->add('c');
-    order1->add('f');
-    Customer *student1 = new Customer(2, 5, 1, order1);
-    registrar->lineUp(student1);
-
-    ListQueue<char> *order2 = new ListQueue<char>;
-    order2->add('f');
-    order2->add('r');
-    order2->add('c');
-    Customer *student2 = new Customer(10, 5, 1, order2);
-    finAid->lineUp(student2);
-
-    int time = 3 - 1;
-    for (int i = 0; i < time; i++) {
-        passTime();
-    }
-
-    ListQueue<char> *order3 = new ListQueue<char>;
-    order3->add('r');
-    order3->add('c');
-    order3->add('f');
-    Customer *student3 = new Customer(6, 4, 2, order3);
-    finAid->lineUp(student3);
 
     read.close();
 
@@ -94,6 +88,7 @@ Customer* ServiceCenter::readLine(string line) {
     int regist;
     int cash;
 
+    cout << "Student " << ++students << ": Destination Order -> " << first << " - " << second << " - " << third << endl;
     ListQueue<char> *order = new ListQueue<char>();
     order->add(first);
     order->add(second);
@@ -136,9 +131,15 @@ Customer* ServiceCenter::readLine(string line) {
     }
 
     Customer *student = new Customer(finAid, regist, cash, order);
+    cout << "Student " << students << " needs: " << finAid << " min at FinAid, " << regist << " min at Regist, " << cash << " min at Cash." << endl;
     return student;
 }
 
-void ServiceCenter::passTime() {
-
+void ServiceCenter::passTime(int time) {
+    for (int i = 1; i < time; i++) {
+        cashier->passTime();
+        finAid->passTime();
+        registrar->passTime();
+        //if (cashier.)
+    }
 }
