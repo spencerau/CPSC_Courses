@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "Window.h"
+#include "DblList.h"
 
 using namespace std;
 
@@ -17,16 +18,23 @@ public:
     void passTime();
     void lineUp(Customer *student);
     Customer* getAttending();
-    //bool getOccupied();
+    Customer* finish();
+    double getMeanWait();
+    int getLongestWait();
+    double getMeanIdle();
+    int getLongestIdle();
+    int getIdleOver5();
 private:
     char type;
+    int totalIdle;
     int maxWindows;
     int occupWindows;
-    bool occupied;
+    int totalWait;
+    int numStudents;
 
     ListQueue<Customer*> *line;
     ListQueue<Customer*> *attending;
-    ListQueue<Window*> *office;
+    DblList<Window*> *office;
 };
 
 #endif

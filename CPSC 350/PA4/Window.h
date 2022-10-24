@@ -19,6 +19,9 @@ public:
     bool passTime();
     double getAvg();
     void setStudent(Customer *student);
+    Customer* getStudent();
+    int getLongest();
+    int getIdle();
 private:
     char type;
     int students;
@@ -26,9 +29,12 @@ private:
     int idle;
     int currWait;
     int timeNeeded;
+    int longest;
     bool occupied;
 
     Customer *currentStudent;
+    Customer *next;
+    Customer *prev;
 };
 
 #endif

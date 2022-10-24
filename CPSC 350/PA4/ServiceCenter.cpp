@@ -8,12 +8,16 @@
 using namespace std;
 
 ServiceCenter::ServiceCenter(string filename) {
-    readFile(filename);
+    studentLine = new ListQueue<Customer*>();
     students = 0;
+    readFile(filename);
+    waitOver10 = 0;
 }
 
 ServiceCenter::~ServiceCenter() {
-
+    delete cashier;
+    delete finAid;
+    delete registrar;
 }
 
 void ServiceCenter::readFile(string filename) {
@@ -56,7 +60,6 @@ void ServiceCenter::readFile(string filename) {
         for (int i = 0; i < numStudents; i++) {
             getline(read, line);
             Customer *student = readLine(line);
-            //cout << "Student " << students << " "
             switch (student->getDest()) {
                 case 'f':
                     finAid->lineUp(student);
@@ -68,8 +71,6 @@ void ServiceCenter::readFile(string filename) {
                     cashier->lineUp(student);
                     break;
             }
-
-            registrar->lineUp(readLine(line));
         }
     }
     // this block of bullshit is temporary because File I/O is some big brain shit
@@ -140,6 +141,67 @@ void ServiceCenter::passTime(int time) {
         cashier->passTime();
         finAid->passTime();
         registrar->passTime();
-        //if (cashier.)
     }
+}
+
+void ServiceCenter::printResult() {
+    printMeanWait();
+    printLongestWait();
+    printWaitOver10();
+    printMeanIdle();
+    printLongestIdle();
+    printIdleOver5();
+}
+
+// The mean student wait time for each office.
+void ServiceCenter::printMeanWait() {
+    cout << "Average Wait Time:" << endl;
+    cout << "Cashier: " << cashier->getMeanWait() << endl;
+    cout << "Financial Aid: " << finAid->getMeanWait() << endl;
+    cout << "Registrar: " << registrar->getMeanWait() << endl;
+    printNewLine();
+}
+
+// The longest student wait time for each office.
+void ServiceCenter::printLongestWait() {
+    cout << "Longest Wait: " << endl;
+    cout << "Cashier: " << cashier->getLongestWait() << endl;
+    cout << "Financial Aid: " << finAid->getLongestWait() << endl;
+    cout << "Registrar: " << registrar->getLongestWait() << endl;
+    printNewLine();
+}
+    
+// The number of students waiting over 10 minutes total across all offices.
+void ServiceCenter::printWaitOver10() {
+    cout << "Number of Students Waiting over 10 Min: " << waitOver10 << endl;
+    printNewLine();
+}
+// The mean window idle time for each office
+void ServiceCenter::printMeanIdle() {
+    cout << "Average Window Idle Time: " << endl;
+    cout << "Cashier: " << cashier->getMeanIdle() << endl;
+    cout << "Financial Aid: " << finAid->getMeanIdle() << endl;
+    cout << "Registrar: " << registrar->getMeanIdle() << endl;
+    printNewLine();
+}
+
+// The longest window idle time for each office
+void ServiceCenter::printLongestIdle() {
+    cout << "Longest Window Idle Time: " << endl;
+    cout << "Cashier: " << cashier->getLongestIdle() << endl;
+    cout << "Financial Aid: " << finAid->getLongestIdle() << endl;
+    cout << "Registrar: " << registrar->getLongestIdle() << endl;
+    printNewLine();
+}
+
+// Number of windows idle for over 5 minutes across all offices.
+void ServiceCenter::printIdleOver5() {
+    int amount = cashier->getIdleOver5();
+    amount += registrar->getIdleOver5();
+    amount += finAid->getIdleOver5();
+    cout << "Number of Windows Idle over 5 Min: " << amount << endl;
+}
+
+void ServiceCenter::printNewLine() {
+    cout << "----------------------------------------------------------------------------------------------------------------------------" << endl;
 }

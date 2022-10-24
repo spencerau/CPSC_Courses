@@ -11,6 +11,7 @@ Window::Window(char type) {
     this->idle = 0;
     this->currWait = 0;
     this->timeNeeded = 0;
+    this->longest = 0;
     this->occupied = false;
 }
 
@@ -49,4 +50,12 @@ void Window::setStudent(Customer *student) {
             break;
     }
     occupied = true;
+}
+
+int Window::getLongest() {
+    return longest;
+}
+
+int Window::getIdle() {
+    return idle;
 }

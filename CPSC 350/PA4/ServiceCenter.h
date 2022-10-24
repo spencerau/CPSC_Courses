@@ -14,11 +14,24 @@ public:
     void readFile(string filename);
     void passTime(int time);
     Customer* readLine(string line);
+    
+    void printResult();
+    void printNewLine();
+
+    void printMeanWait();
+    void printLongestWait();
+    void printWaitOver10();
+    void printMeanIdle();
+    void printLongestIdle();
+    void printIdleOver5();
 private:
     Office *cashier;
     Office *finAid;
     Office *registrar;
     int students;
+    int waitOver10;
+
+    ListQueue<Customer*> *studentLine;
 };
 
 #endif
