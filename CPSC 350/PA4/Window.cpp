@@ -7,7 +7,7 @@ using namespace std;
 Window::Window(char type) {
     this->type = type;
     this->students = 0;
-    this->totalTime = 0;
+    this->totalWait = 0;
     this->idle = 0;
     this->currWait = 0;
     this->timeNeeded = 0;
@@ -16,28 +16,14 @@ Window::Window(char type) {
 }
 
 Window::~Window() {
-}
-
-bool Window::passTime() {
-    if (occupied) {
-        if (++currWait == timeNeeded) {
-            currWait = 0;
-            return true;
-        }
-        return false;
-    }
-    else {
-        idle++;
-        return false;
-    }
-}
-
-double Window::getAvg() {
-    return totalTime / students;
+    delete curStudent;
 }
 
 void Window::setStudent(Customer *student) {
-    this->currentStudent = student;
+    this->curStudent = student;
+    curStudent->attend();
+    timeNeeded = curStudent->getTimeNeeded();
+    /*
     switch (type) {
         case 'c':
             timeNeeded = student->getCash();
@@ -49,6 +35,7 @@ void Window::setStudent(Customer *student) {
             timeNeeded = student->getRegist();
             break;
     }
+    */
     occupied = true;
 }
 
@@ -58,4 +45,31 @@ int Window::getLongest() {
 
 int Window::getIdle() {
     return idle;
+}
+
+Customer* Window::getStudent() {
+    return curStudent;
+}
+
+bool Window::isOccupied() {
+    if (occupied) return true;
+    else return false;
+}
+
+void Window::finish() {
+    totalWait += curStudent->getCurWait();
+    curStudent->finish();
+    occupied = false;
+}
+
+void Window::passTime() {
+    // is idle
+    if (!occupied) idle++;
+    // occupied
+    else {
+        curStudent->passTime();
+        if (curStudent->getAttending() >= timeNeeded) {
+            finish();
+        }
+    }
 }

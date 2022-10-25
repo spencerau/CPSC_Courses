@@ -18,12 +18,14 @@ public:
     void passTime();
     void lineUp(Customer *student);
     Customer* getAttending();
-    Customer* finish();
     double getMeanWait();
     int getLongestWait();
     double getMeanIdle();
     int getLongestIdle();
     int getIdleOver5();
+    DblList<Window*>* getOffice();
+    ListQueue<Customer*>* getFinished();
+    
 private:
     char type;
     int totalIdle;
@@ -33,7 +35,7 @@ private:
     int numStudents;
 
     ListQueue<Customer*> *line;
-    ListQueue<Customer*> *attending;
+    ListQueue<Customer*> *finished;
     DblList<Window*> *office;
 };
 

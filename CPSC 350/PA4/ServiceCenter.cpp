@@ -9,6 +9,7 @@ using namespace std;
 
 ServiceCenter::ServiceCenter(string filename) {
     studentLine = new ListQueue<Customer*>();
+    finished = new ListQueue<Customer*>();
     students = 0;
     readFile(filename);
     waitOver10 = 0;
@@ -141,6 +142,36 @@ void ServiceCenter::passTime(int time) {
         cashier->passTime();
         finAid->passTime();
         registrar->passTime();
+
+        if (!cashier->getFinished()->isEmpty()) {
+            Customer* student = cashier->getFinished()->remove();
+            if (student->isFinished()) finished->add(student);
+            else {
+                char dest = student->getOrder()->peek();
+                if (dest == 'f') finAid->lineUp(student);
+                else if (dest == 'r') registrar->lineUp(student);
+            }
+        }
+
+        if (!finAid->getFinished()->isEmpty()) {
+            Customer* student = finAid->getFinished()->remove();
+            if (student->isFinished()) finished->add(student);
+            else {
+                char dest = student->getOrder()->peek();
+                if (dest == 'c') cashier->lineUp(student);
+                else if (dest == 'r') registrar->lineUp(student);
+            }
+        }
+
+        if (!registrar->getFinished()->isEmpty()) {
+            Customer* student = registrar->getFinished()->remove();
+            if (student->isFinished()) finished->add(student);
+            else {
+                char dest = student->getOrder()->peek();
+                if (dest == 'f') finAid->lineUp(student);
+                else if (dest == 'c') cashier->lineUp(student);
+            }
+        }
     }
 }
 

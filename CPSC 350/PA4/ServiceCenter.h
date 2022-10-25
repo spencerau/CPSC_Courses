@@ -32,6 +32,7 @@ private:
     int waitOver10;
 
     ListQueue<Customer*> *studentLine;
+    ListQueue<Customer*> *finished;
 };
 
 #endif

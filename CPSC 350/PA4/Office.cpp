@@ -10,7 +10,7 @@ using namespace std;
 Office::Office(int size, char type) {
     this->type = type;
     this->line = new ListQueue<Customer*>();
-    this->attending = new ListQueue<Customer*>();
+    this->finished = new ListQueue<Customer*>();
     this->office = new DblList<Window*>();
     for (int i = 0; i < size; i++) {
         office->addBack(new Window(type));
@@ -24,43 +24,58 @@ Office::Office(int size, char type) {
 
 Office::~Office() {
     delete line;
-    delete attending;
+    delete finished;
     delete office;
+}
+
+ListQueue<Customer*>* Office::getFinished() {
+    return finished;
 }
 
 // this is when the student goes up to the window and does their crap
 void Office::attendStudent() {
     if (occupWindows == maxWindows) return;
     occupWindows++;
-    //Window *window = office->get(0);
-    //while ()
-    attending->add(line->remove());
+    for (int i = 0; i < office->getSize(); i++) {
+        if (!office->get(i)->isOccupied()) {
+        office->get(i)->setStudent(line->remove());
+        }
+    }
 }
 
 // this is when a student lines up in the back of the line; it calls attendStudent() if any windows are open
 void Office::lineUp(Customer *student) {
-    student->popOrder();
     line->add(student);
     while (occupWindows < maxWindows) {
         attendStudent();
     }
 }
 
-Customer* Office::finish() {
-    //totalWait += 
-}
-
+// need to fix it so that ServiceCenter.cpp can take a Customer *student from Office.cpp 
 void Office::passTime() {
-    
+    for (int i = 0; i < office->getSize(); i++) {
+        office->get(i)->passTime();
+        if (office->get(i)->getStudent()->isDone()) {
+            finished->add(office->get(i)->getStudent());
+        }
+        if (!office->get(i)->isOccupied() && !line->isEmpty()) {
+            office->get(i)->setStudent(line->remove());
+        }
+    }
 }
 
 double Office::getMeanWait() {
-    return totalWait / numStudents;
+    Window *window;
+    int total = 0;
+    for (int i = 0; i < office->getSize(); i++) {
+        total += office->get(i)->getTotalWait();
+    }
+    return total / numStudents;
 }
 
 int Office::getLongestWait() {
     Window *window;
-    int longest = window->getLongest();
+    int longest = 0;
     // iterate through Office DLL
     for (int i = 0; i < office->getSize(); i++) {
         window = office->get(i);
