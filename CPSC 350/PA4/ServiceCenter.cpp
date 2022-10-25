@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Office.h"
+//#include "Office.h"
 #include "ServiceCenter.h"
 #include <fstream>
 #include <sstream>
@@ -39,13 +39,13 @@ void ServiceCenter::readFile(string filename) {
     int windows;
     read >> windows;
     this->registrar = new Office(windows, 'r');
-    cout << "The Registrar's Office has " << windows << "windows." << endl;
+    cout << "The Registrar's Office has " << windows << " windows." << endl;
     read >> windows;
     this->cashier = new Office(windows, 'c');
-    cout << "The Cashier's Office has " << windows << "windows." << endl;
+    cout << "The Cashier's Office has " << windows << " windows." << endl;
     read >> windows;
     this->finAid = new Office(windows, 'f');    
-    cout << "The Financial Aid Office has " << windows << "windows." << endl;
+    cout << "The Financial Aid Office has " << windows << " windows." << endl;
 
     string line;
     int i = 0;

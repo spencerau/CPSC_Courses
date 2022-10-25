@@ -1,9 +1,10 @@
 #ifndef SERVICECENTER_H
-#define SERVICECENTER_h
+#define SERVICECENTER_H
 
 #include <iostream>
 #include "Office.h"
 #include <fstream>
+#include "Office.h"
 
 using namespace std;
 

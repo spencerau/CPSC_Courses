@@ -45,6 +45,7 @@ void Office::attendStudent() {
 
 // this is when a student lines up in the back of the line; it calls attendStudent() if any windows are open
 void Office::lineUp(Customer *student) {
+    student->lineUp();
     line->add(student);
     while (occupWindows < maxWindows) {
         attendStudent();

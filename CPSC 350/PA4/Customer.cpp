@@ -1,6 +1,11 @@
 #include <cstdlib>
 #include <iostream>
 #include "Customer.h"
+/*
+#include "ListNode.h"
+#include "DblList.h"
+#include "ListQueue.h"
+*/
 
 using namespace std;
 
@@ -10,10 +15,10 @@ Customer::Customer(int finAid, int regist, int cash, ListQueue<char> *order) {
     this->cash = cash;
     this->order = order;
     
+    this->attending = 0;
     this->curWait = 0;
     this->totalWait = 0;
     this->waiting = true;
-    this->attending = 0;
     this->timeNeeded = 0;
     this->done = false;
     this->fullyDone = false;
@@ -100,3 +105,18 @@ void Customer::passTime() {
     if (waiting) curWait++;
     else attending++;
 }
+/*
+int main() {
+    ListQueue<char> *order = new ListQueue<char>();
+    order->add('c');
+    order->add('f');
+    order->add('r');
+
+    Customer *student = new Customer(1, 2, 3, order);
+    student->attend();
+    student->finish();
+    student->passTime();
+
+    return 0;
+}
+*/

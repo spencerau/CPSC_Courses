@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "Window.h"
+#include "Customer.h"
 
 using namespace std;
 
@@ -51,6 +52,10 @@ Customer* Window::getStudent() {
     return curStudent;
 }
 
+int Window::getTotalWait() {
+    return totalWait;
+}
+
 bool Window::isOccupied() {
     if (occupied) return true;
     else return false;
@@ -73,3 +78,18 @@ void Window::passTime() {
         }
     }
 }
+/*
+int main() {
+    ListQueue<char> *order = new ListQueue<char>();
+    order->add('c');
+    order->add('f');
+    order->add('r');
+
+    Customer *student = new Customer(1, 2, 3, order);
+
+    Window *window = new Window('c');
+    window->setStudent(student);
+    window->passTime();
+    window->finish();
+}
+*/
