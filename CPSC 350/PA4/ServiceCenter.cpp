@@ -36,6 +36,7 @@ void ServiceCenter::readFile(string filename) {
     // at time 3, 1 student arrives
     // student 3 needs 4 at regist, 2 at cash, 6 at fin aid
 
+    printNewLine();
     int windows;
     read >> windows;
     this->registrar = new Office(windows, 'r');
@@ -46,10 +47,13 @@ void ServiceCenter::readFile(string filename) {
     read >> windows;
     this->finAid = new Office(windows, 'f');    
     cout << "The Financial Aid Office has " << windows << " windows." << endl;
+    printNewLine();
 
     string line;
     int i = 0;
     while (getline(read, line)) {
+        getline(read, line);
+        //cout << line << endl;
         int time = stoi(line);
         passTime(time);
         cout << "Time: " << time << endl;
@@ -58,17 +62,26 @@ void ServiceCenter::readFile(string filename) {
         int numStudents = stoi(line);
         cout << "The will be " << numStudents << " students joining the Queue at this time." << endl;
 
+        bool first = true;
+
         for (int i = 0; i < numStudents; i++) {
+            if (!first) {
+                getline(read, line);
+                time = stoi(line);
+                passTime(time);
+            }
             getline(read, line);
+            cout << line << endl;
+            first = false;
             Customer *student = readLine(line);
             switch (student->getDest()) {
-                case 'f':
+                case 'F':
                     finAid->lineUp(student);
                     break;
-                case 'r':
+                case 'R':
                     registrar->lineUp(student);
                     break;
-                case 'c':
+                case 'C':
                     cashier->lineUp(student);
                     break;
             }
@@ -97,37 +110,37 @@ Customer* ServiceCenter::readLine(string line) {
     order->add(third);
 
     switch (first) {
-        case 'f':
+        case 'F':
             finAid = line[0];
             break;
-        case 'r':
+        case 'R':
             regist = line[0];
             break;
-        case 'c':
+        case 'C':
             cash = line[0];
             break;
     }
 
     switch (second) {
-        case 'f':
+        case 'F':
             finAid = line[2];
             break;
-        case 'r':
+        case 'R':
             regist = line[2];
             break;
-        case 'c':
+        case 'C':
             cash = line[2];
             break;
     }
 
     switch (third) {
-        case 'f':
+        case 'F':
             finAid = line[4];
             break;
-        case 'r':
+        case 'R':
             regist = line[4];
             break;
-        case 'c':
+        case 'C':
             cash = line[4];
             break;
     }
@@ -148,8 +161,8 @@ void ServiceCenter::passTime(int time) {
             if (student->isFinished()) finished->add(student);
             else {
                 char dest = student->getOrder()->peek();
-                if (dest == 'f') finAid->lineUp(student);
-                else if (dest == 'r') registrar->lineUp(student);
+                if (dest == 'F') finAid->lineUp(student);
+                else if (dest == 'R') registrar->lineUp(student);
             }
         }
 
@@ -158,8 +171,8 @@ void ServiceCenter::passTime(int time) {
             if (student->isFinished()) finished->add(student);
             else {
                 char dest = student->getOrder()->peek();
-                if (dest == 'c') cashier->lineUp(student);
-                else if (dest == 'r') registrar->lineUp(student);
+                if (dest == 'C') cashier->lineUp(student);
+                else if (dest == 'R') registrar->lineUp(student);
             }
         }
 
@@ -168,8 +181,8 @@ void ServiceCenter::passTime(int time) {
             if (student->isFinished()) finished->add(student);
             else {
                 char dest = student->getOrder()->peek();
-                if (dest == 'f') finAid->lineUp(student);
-                else if (dest == 'c') cashier->lineUp(student);
+                if (dest == 'F') finAid->lineUp(student);
+                else if (dest == 'C') cashier->lineUp(student);
             }
         }
     }

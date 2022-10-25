@@ -79,13 +79,13 @@ void Customer::lineUp() {
 void Customer::attend() {
     waiting = false;
     switch (order->peek()) {
-        case 'c':
+        case 'C':
             timeNeeded = cash;
             break;
-        case 'f':
+        case 'F':
             timeNeeded = finAid;
             break;
-        case 'r':
+        case 'R':
             timeNeeded = regist;
             break;
     }
@@ -105,18 +105,3 @@ void Customer::passTime() {
     if (waiting) curWait++;
     else attending++;
 }
-/*
-int main() {
-    ListQueue<char> *order = new ListQueue<char>();
-    order->add('c');
-    order->add('f');
-    order->add('r');
-
-    Customer *student = new Customer(1, 2, 3, order);
-    student->attend();
-    student->finish();
-    student->passTime();
-
-    return 0;
-}
-*/

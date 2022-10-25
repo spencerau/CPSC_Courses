@@ -57,8 +57,7 @@ int Window::getTotalWait() {
 }
 
 bool Window::isOccupied() {
-    if (occupied) return true;
-    else return false;
+    return occupied;
 }
 
 void Window::finish() {
@@ -78,18 +77,3 @@ void Window::passTime() {
         }
     }
 }
-/*
-int main() {
-    ListQueue<char> *order = new ListQueue<char>();
-    order->add('c');
-    order->add('f');
-    order->add('r');
-
-    Customer *student = new Customer(1, 2, 3, order);
-
-    Window *window = new Window('c');
-    window->setStudent(student);
-    window->passTime();
-    window->finish();
-}
-*/
