@@ -48,9 +48,12 @@ void Office::attendStudent() {
 void Office::lineUp(Customer *student) {
     student->lineUp();
     line->add(student);
+    cout << "Size of Line for " << type << " is " << line->size() << endl;
     if (occupWindows < maxWindows) {
         attendStudent();
     }
+    cout << "Size of Line for " << type << " is " << line->size() << endl;
+
 }
 
 // need to fix it so that ServiceCenter.cpp can take a Customer *student from Office.cpp 
@@ -69,6 +72,7 @@ void Office::passTime() {
 double Office::getMeanWait() {
     Window *window;
     int total = 0;
+    cout << "Number of Students: " << numStudents << endl;
     for (int i = 0; i < office->getSize(); i++) {
         total += office->get(i)->getTotalWait();
     }

@@ -19,6 +19,8 @@ ServiceCenter::~ServiceCenter() {
     delete cashier;
     delete finAid;
     delete registrar;
+    delete studentLine;
+    delete finished;
 }
 
 void ServiceCenter::readFile(string filename) {
@@ -82,8 +84,8 @@ void ServiceCenter::readFile(string filename) {
                     cashier->lineUp(student);
                     break;
             }
+            printNewLine();
         }
-        printNewLine();
     }
     // this block of bullshit is temporary because File I/O is some big brain shit
 
