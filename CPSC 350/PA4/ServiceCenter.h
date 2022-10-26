@@ -13,7 +13,7 @@ public:
     ServiceCenter(string filename);
     ~ServiceCenter();
     void readFile(string filename);
-    void passTime(int time);
+    void passTime(int current, int target);
     Customer* readLine(string line);
     
     void printResult();

@@ -38,41 +38,38 @@ void ServiceCenter::readFile(string filename) {
 
     printNewLine();
     int windows;
-    read >> windows;
+    string line;
+    getline(read, line);
+    windows = stoi(line);
     this->registrar = new Office(windows, 'r');
     cout << "The Registrar's Office has " << windows << " windows." << endl;
-    read >> windows;
+    getline(read, line);
+    windows = stoi(line);
     this->cashier = new Office(windows, 'c');
     cout << "The Cashier's Office has " << windows << " windows." << endl;
-    read >> windows;
+    getline(read, line);
+    windows = stoi(line);
     this->finAid = new Office(windows, 'f');    
     cout << "The Financial Aid Office has " << windows << " windows." << endl;
     printNewLine();
 
-    string line;
-    int i = 0;
+    int current = 0;
+    int target;
     while (getline(read, line)) {
-        getline(read, line);
-        //cout << line << endl;
-        int time = stoi(line);
-        passTime(time);
-        cout << "Time: " << time << endl;
+        //cout << "This should be the time " << line << endl;
+        target = stoi(line);
+        passTime(current, target);
+        current = target;
+        cout << "Time: " << current << endl;
 
         getline(read, line);
+        //cout << "This should be the number of students " << line << endl;
         int numStudents = stoi(line);
-        cout << "The will be " << numStudents << " students joining the Queue at this time." << endl;
-
-        bool first = true;
-
+        cout << "The will be " << numStudents << " students joining the queue at this time." << endl;
+    
         for (int i = 0; i < numStudents; i++) {
-            if (!first) {
-                getline(read, line);
-                time = stoi(line);
-                passTime(time);
-            }
             getline(read, line);
-            cout << line << endl;
-            first = false;
+            //cout << "This should be the student " << line << endl;
             Customer *student = readLine(line);
             switch (student->getDest()) {
                 case 'F':
@@ -86,6 +83,7 @@ void ServiceCenter::readFile(string filename) {
                     break;
             }
         }
+        printNewLine();
     }
     // this block of bullshit is temporary because File I/O is some big brain shit
 
@@ -95,63 +93,76 @@ void ServiceCenter::readFile(string filename) {
 }
 
 Customer* ServiceCenter::readLine(string line) {
-    char first = line[6];
-    char second = line[8];
-    char third = line[10];
+    stringstream fullLine(line);
+    int a;
+    fullLine >> a;
+    int b;
+    fullLine >> b;
+    int c;
+    fullLine >> c;
 
     int finAid;
     int regist;
     int cash;
 
-    cout << "Student " << ++students << ": Destination Order -> " << first << " - " << second << " - " << third << endl;
+    char first;
+    fullLine >> first;
+    char second;
+    fullLine >> second;
+    char third;
+    fullLine >> third;
+
+    cout << "Student " << ++students << " Destination Order: " << first << " - " << second << " - " << third << endl;
     ListQueue<char> *order = new ListQueue<char>();
     order->add(first);
     order->add(second);
     order->add(third);
 
+    // this is a dogshit way to parse the line but it works so meh
     switch (first) {
         case 'F':
-            finAid = line[0];
+            finAid = a;
             break;
         case 'R':
-            regist = line[0];
+            regist = a;
             break;
         case 'C':
-            cash = line[0];
+            cash = a;
             break;
     }
 
     switch (second) {
         case 'F':
-            finAid = line[2];
+            finAid = b;
             break;
         case 'R':
-            regist = line[2];
+            regist = b;
             break;
         case 'C':
-            cash = line[2];
+            cash = b;
             break;
     }
 
     switch (third) {
         case 'F':
-            finAid = line[4];
+            finAid = c;
             break;
         case 'R':
-            regist = line[4];
+            regist = c;
             break;
         case 'C':
-            cash = line[4];
+            cash = c;
             break;
     }
 
     Customer *student = new Customer(finAid, regist, cash, order);
-    cout << "Student " << students << " needs: " << finAid << " min at FinAid, " << regist << " min at Regist, " << cash << " min at Cash." << endl;
+    cout << "Student " << students << " needs: " << student->getFinAid() << " min at FinAid, " << student->getRegist() << " min at Regist, " 
+    << student->getCash() << " min at Cashier." << endl;
     return student;
 }
 
-void ServiceCenter::passTime(int time) {
-    for (int i = 1; i < time; i++) {
+void ServiceCenter::passTime(int target, int current) {
+    for (int i = current; i < target; i++) {
         cashier->passTime();
         finAid->passTime();
         registrar->passTime();

@@ -38,7 +38,8 @@ void Office::attendStudent() {
     occupWindows++;
     for (int i = 0; i < office->getSize(); i++) {
         if (!office->get(i)->isOccupied()) {
-        office->get(i)->setStudent(line->remove());
+            office->get(i)->setStudent(line->remove());
+            return;
         }
     }
 }
@@ -47,7 +48,7 @@ void Office::attendStudent() {
 void Office::lineUp(Customer *student) {
     student->lineUp();
     line->add(student);
-    while (occupWindows < maxWindows) {
+    if (occupWindows < maxWindows) {
         attendStudent();
     }
 }
