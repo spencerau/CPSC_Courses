@@ -60,9 +60,11 @@ void ServiceCenter::readFile(string filename) {
     while (getline(read, line)) {
         //cout << "This should be the time " << line << endl;
         target = stoi(line);
-        cout << "target time is " << target << endl;
+        //cout << "target time is " << target << endl;
         while (current < target) {
             cout << "current time is " << current << endl;
+                cout << "target time is " << target << endl;
+
             
             passTime();
             current++;
@@ -97,9 +99,11 @@ void ServiceCenter::readFile(string filename) {
 
     read.close();
 
+    /*
     while (finished->size() != students) {  
         passTime();
     }
+    */
 }
 
 Customer* ServiceCenter::readLine(string line) {
@@ -177,12 +181,12 @@ void ServiceCenter::passTime() {
     finAid->printWindows();
     registrar->printWindows();
     cashier->passTime();
-    cout << "CASH passtime worked" << endl;
+    //cout << "CASH passtime worked" << endl;
     finAid->passTime();
-    cout << "FinAid passtime worked" << endl;
+    //cout << "FinAid passtime worked" << endl;
     registrar->passTime();
-    cout << "Regist passTime worked" << endl;
-    cout << "all passTime() for Office.cpp worked" << endl;
+    //cout << "Regist passTime worked" << endl;
+    //cout << "all passTime() for Office.cpp worked" << endl;
 
     while (!cashier->getFinished()->isEmpty()) {
         Customer* student = cashier->getFinished()->remove();
@@ -217,11 +221,11 @@ void ServiceCenter::passTime() {
 
 void ServiceCenter::printResult() {
     printMeanWait();
-    printLongestWait();
-    printWaitOver10();
-    printMeanIdle();
-    printLongestIdle();
-    printIdleOver5();
+    //printLongestWait();
+    //printWaitOver10();
+    //printMeanIdle();
+    //printLongestIdle();
+    //printIdleOver5();
 }
 
 // The mean student wait time for each office.

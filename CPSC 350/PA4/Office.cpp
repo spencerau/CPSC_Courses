@@ -33,19 +33,19 @@ ListQueue<Customer*>* Office::getFinished() {
 }
 
 void Office::printWindows() {
-    cout << "The office is " << type << endl;
+    //cout << "The office is " << type << endl;
     int occupied = 0;
-    cout << "Size of the Office is " << office->getSize() << endl;
+    //cout << "Size of the Office is " << office->getSize() << endl;
     for (int i = 0; i < office->getSize(); i++) {
-        cout << "Window " << i;
+        //cout << "Window " << i;
         if (office->get(i)->isOccupied()) {
-            cout << " has a Student" << endl;
+            //cout << " has a Student" << endl;
             occupied++;
         }
-        else cout << " is sitting on their ass playing with their dicks" << endl;
+        //else cout << " is sitting on their ass playing with their dicks" << endl;
     }
-    cout << occupied << " Windows are currently occupied" << endl;
-    cout << "---------------------------------------------------------" << endl;
+    //cout << occupied << " Windows are currently occupied" << endl;
+    //cout << "---------------------------------------------------------" << endl;
 }
 
 // this is when the student goes up to the window and does their crap
@@ -75,18 +75,30 @@ void Office::lineUp(Customer *student) {
 // need to fix it so that ServiceCenter.cpp can take a Customer *student from Office.cpp 
 void Office::passTime() {
     for (int i = 0; i < office->getSize(); i++) {
-        cout << "Window " << i << " before passTime()" << endl;
+        cout << endl; 
+        cout << "Currently at Window " << i << " in Office " << type <<endl;
+        //cout << "Window " << i << " before passTime()" << endl;
         office->get(i)->passTime();
-        cout << "Window " << i << " passTime() worked" << endl;
-        if (office->get(i)->getStudent()->isDone()) {
-            finished->add(office->get(i)->getStudent());
+        //cout << "Window " << i << " passTime() worked" << endl;
+
+        //cout << "Student was added to this window" << endl;
+        if (office->get(i)->isOccupied()) {
+            //cout << "Before checking if line is empty" << endl;
+            if (!line->isEmpty()) {
+                //cout << "Before setStudent()" << endl;
+                office->get(i)->setStudent(line->remove());
+                //cout << "Student successfulled attended at Window " << i << endl;
+            }
+            // this bracket is causing a seg fault
+            if (office->get(i)->getStudent()->isDone()) {
+                finished->add(office->get(i)->getStudent());
+            }
         }
-        cout << "Student was added to this window" << endl;
-        if (!office->get(i)->isOccupied() && !line->isEmpty()) {
-            office->get(i)->setStudent(line->remove());
-        }
-        cout << "Student finished" << endl;
+        //cout << "Finished at Window " << i << endl;
     }
+    cout << endl;
+    cout << "Office " << type << " has successfully passed 1 min" << endl;
+    cout << "---------------------------------------------------------------------" << endl;
 }
 
 double Office::getMeanWait() {
