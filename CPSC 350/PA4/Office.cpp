@@ -32,6 +32,22 @@ ListQueue<Customer*>* Office::getFinished() {
     return finished;
 }
 
+void Office::printWindows() {
+    cout << "The office is " << type << endl;
+    int occupied = 0;
+    cout << "Size of the Office is " << office->getSize() << endl;
+    for (int i = 0; i < office->getSize(); i++) {
+        cout << "Window " << i;
+        if (office->get(i)->isOccupied()) {
+            cout << " has a Student" << endl;
+            occupied++;
+        }
+        else cout << " is sitting on their ass playing with their dicks" << endl;
+    }
+    cout << occupied << " Windows are currently occupied" << endl;
+    cout << "---------------------------------------------------------" << endl;
+}
+
 // this is when the student goes up to the window and does their crap
 void Office::attendStudent() {
     if (occupWindows == maxWindows) return;
@@ -48,31 +64,36 @@ void Office::attendStudent() {
 void Office::lineUp(Customer *student) {
     student->lineUp();
     line->add(student);
-    cout << "Size of Line for " << type << " is " << line->size() << endl;
+    //cout << "Size of Line for " << type << " is " << line->size() << endl;
     if (occupWindows < maxWindows) {
         attendStudent();
     }
-    cout << "Size of Line for " << type << " is " << line->size() << endl;
+    //cout << "Size of Line for " << type << " is " << line->size() << endl;
 
 }
 
 // need to fix it so that ServiceCenter.cpp can take a Customer *student from Office.cpp 
 void Office::passTime() {
     for (int i = 0; i < office->getSize(); i++) {
+        cout << "Window " << i << " before passTime()" << endl;
         office->get(i)->passTime();
+        cout << "Window " << i << " passTime() worked" << endl;
         if (office->get(i)->getStudent()->isDone()) {
             finished->add(office->get(i)->getStudent());
         }
+        cout << "Student was added to this window" << endl;
         if (!office->get(i)->isOccupied() && !line->isEmpty()) {
             office->get(i)->setStudent(line->remove());
         }
+        cout << "Student finished" << endl;
     }
 }
 
 double Office::getMeanWait() {
     Window *window;
     int total = 0;
-    cout << "Number of Students: " << numStudents << endl;
+    //cout << "Number of Students: " << numStudents << endl;
+    printWindows();
     for (int i = 0; i < office->getSize(); i++) {
         total += office->get(i)->getTotalWait();
     }

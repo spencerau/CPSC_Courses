@@ -12,20 +12,11 @@ main.cpp file for PA4
 #include <cstdlib>
 #include <iostream>
 
-//#include "ServiceCenter.cpp"
-//#include "ListNode.cpp"
-//#include "DblList.cpp"
-//#include "ListQueue.h"
-//#include "Customer.cpp"
-//#include "Window.cpp"
-//#include "Office.cpp"
-
-
 using namespace std;
 
-
 int main(int argc, char **argv) {
-    if (argc != 2) return -1;
-    ServiceCenter *serviceCenter = new ServiceCenter(argv[1]);
+    //if (argc != 2) return -1;
+    //ServiceCenter *serviceCenter = new ServiceCenter(argv[1]);
+    ServiceCenter *serviceCenter = new ServiceCenter("test.txt");
     serviceCenter->printResult();
 }

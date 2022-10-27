@@ -23,6 +23,7 @@ Window::~Window() {
 void Window::setStudent(Customer *student) {
     this->curStudent = student;
     curStudent->attend();
+    cout << "Student.attend() worked" << endl;
     timeNeeded = curStudent->getTimeNeeded();
     /*
     switch (type) {
@@ -71,9 +72,14 @@ void Window::passTime() {
     if (!occupied) idle++;
     // occupied
     else {
-        curStudent->passTime();
+        cout << "before curStudent.passTime()" << endl;
+        curStudent->passTime(); // its this line that is fucky
+        cout << "Student at this Window passTime() worked" << endl;
         if (curStudent->getAttending() >= timeNeeded) {
+            cout << "before Customer.finish()" << endl;
             finish();
+                    cout << "Student finished" << endl;
+
         }
     }
 }

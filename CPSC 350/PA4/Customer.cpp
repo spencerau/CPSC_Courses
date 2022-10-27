@@ -78,6 +78,11 @@ void Customer::lineUp() {
 
 void Customer::attend() {
     waiting = false;
+    cout << "current office is " << order->peek() << endl;
+    cout << "Student needs " << cash << " min at Cashier" << endl;
+    cout << "Student needs " << finAid << " min at Fin Aid" << endl;
+    cout << "Student needs " << regist << " min at Registrar" << endl;
+
     switch (order->peek()) {
         case 'C':
             timeNeeded = cash;
@@ -102,6 +107,12 @@ void Customer::finish() {
 }
 
 void Customer::passTime() {
-    if (waiting) curWait++;
-    else attending++;
+    if (waiting) {
+        curWait++;
+        cout << "Student is Waiting" << endl;
+    }
+    else {
+        attending++;
+        cout << "Student is being Attended To" << endl;
+    }
 }

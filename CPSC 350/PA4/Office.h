@@ -25,6 +25,8 @@ public:
     int getIdleOver5();
     DblList<Window*>* getOffice();
     ListQueue<Customer*>* getFinished();
+
+    void printWindows();
     
 private:
     char type;

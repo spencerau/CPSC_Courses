@@ -43,15 +43,15 @@ void ServiceCenter::readFile(string filename) {
     string line;
     getline(read, line);
     windows = stoi(line);
-    this->registrar = new Office(windows, 'r');
+    this->registrar = new Office(windows, 'R');
     cout << "The Registrar's Office has " << windows << " windows." << endl;
     getline(read, line);
     windows = stoi(line);
-    this->cashier = new Office(windows, 'c');
+    this->cashier = new Office(windows, 'C');
     cout << "The Cashier's Office has " << windows << " windows." << endl;
     getline(read, line);
     windows = stoi(line);
-    this->finAid = new Office(windows, 'f');    
+    this->finAid = new Office(windows, 'F');    
     cout << "The Financial Aid Office has " << windows << " windows." << endl;
     printNewLine();
 
@@ -60,8 +60,14 @@ void ServiceCenter::readFile(string filename) {
     while (getline(read, line)) {
         //cout << "This should be the time " << line << endl;
         target = stoi(line);
-        passTime(current, target);
-        current = target;
+        cout << "target time is " << target << endl;
+        while (current < target) {
+            cout << "current time is " << current << endl;
+            
+            passTime();
+            current++;
+        }
+        //current = target;
         cout << "Time: " << current << endl;
 
         getline(read, line);
@@ -71,8 +77,8 @@ void ServiceCenter::readFile(string filename) {
     
         for (int i = 0; i < numStudents; i++) {
             getline(read, line);
-            //cout << "This should be the student " << line << endl;
             Customer *student = readLine(line);
+            students++;
             switch (student->getDest()) {
                 case 'F':
                     finAid->lineUp(student);
@@ -91,7 +97,9 @@ void ServiceCenter::readFile(string filename) {
 
     read.close();
 
-
+    while (finished->size() != students) {  
+        passTime();
+    }
 }
 
 Customer* ServiceCenter::readLine(string line) {
@@ -163,40 +171,46 @@ Customer* ServiceCenter::readLine(string line) {
     return student;
 }
 
-void ServiceCenter::passTime(int target, int current) {
-    for (int i = current; i < target; i++) {
-        cashier->passTime();
-        finAid->passTime();
-        registrar->passTime();
+void ServiceCenter::passTime() {
+    //for (int i = current; i < target; i++) {
+    cashier->printWindows();
+    finAid->printWindows();
+    registrar->printWindows();
+    cashier->passTime();
+    cout << "CASH passtime worked" << endl;
+    finAid->passTime();
+    cout << "FinAid passtime worked" << endl;
+    registrar->passTime();
+    cout << "Regist passTime worked" << endl;
+    cout << "all passTime() for Office.cpp worked" << endl;
 
-        if (!cashier->getFinished()->isEmpty()) {
-            Customer* student = cashier->getFinished()->remove();
-            if (student->isFinished()) finished->add(student);
-            else {
-                char dest = student->getOrder()->peek();
-                if (dest == 'F') finAid->lineUp(student);
-                else if (dest == 'R') registrar->lineUp(student);
-            }
+    while (!cashier->getFinished()->isEmpty()) {
+        Customer* student = cashier->getFinished()->remove();
+        if (student->isFinished()) finished->add(student);
+        else {
+            char dest = student->getOrder()->peek();
+            if (dest == 'F') finAid->lineUp(student);
+            else if (dest == 'R') registrar->lineUp(student);
         }
+    }
 
-        if (!finAid->getFinished()->isEmpty()) {
-            Customer* student = finAid->getFinished()->remove();
-            if (student->isFinished()) finished->add(student);
-            else {
-                char dest = student->getOrder()->peek();
-                if (dest == 'C') cashier->lineUp(student);
-                else if (dest == 'R') registrar->lineUp(student);
-            }
+    while (!finAid->getFinished()->isEmpty()) {
+        Customer* student = finAid->getFinished()->remove();
+        if (student->isFinished()) finished->add(student);
+        else {
+            char dest = student->getOrder()->peek();
+            if (dest == 'C') cashier->lineUp(student);
+            else if (dest == 'R') registrar->lineUp(student);
         }
+    }
 
-        if (!registrar->getFinished()->isEmpty()) {
-            Customer* student = registrar->getFinished()->remove();
-            if (student->isFinished()) finished->add(student);
-            else {
-                char dest = student->getOrder()->peek();
-                if (dest == 'F') finAid->lineUp(student);
-                else if (dest == 'C') cashier->lineUp(student);
-            }
+    while (!registrar->getFinished()->isEmpty()) {
+        Customer* student = registrar->getFinished()->remove();
+        if (student->isFinished()) finished->add(student);
+        else {
+            char dest = student->getOrder()->peek();
+            if (dest == 'F') finAid->lineUp(student);
+            else if (dest == 'C') cashier->lineUp(student);
         }
     }
 }
