@@ -32,6 +32,15 @@ ListQueue<Customer*>* Office::getFinished() {
     return finished;
 }
 
+void Office::printFinishedList() {
+    if (finished->isEmpty()) cout << "Finished is Empty" << endl;
+    else {
+        for (int i = 0; i < finished->size(); i++) {
+            cout << "Index " << i << ": Student" << endl;
+        }
+    }
+}
+
 void Office::printWindows() {
     //cout << "The office is " << type << endl;
     int occupied = 0;
@@ -90,7 +99,8 @@ void Office::passTime() {
                 //cout << "Student successfulled attended at Window " << i << endl;
             }
             // this bracket is causing a seg fault
-            if (office->get(i)->getStudent()->isDone()) {
+            if (office->get(i)->getStudent()->isFinished()) {
+                cout << "student is finished" << endl;
                 finished->add(office->get(i)->getStudent());
             }
         }
@@ -98,6 +108,7 @@ void Office::passTime() {
     }
     cout << endl;
     cout << "Office " << type << " has successfully passed 1 min" << endl;
+    printFinishedList();
     cout << "---------------------------------------------------------------------" << endl;
 }
 

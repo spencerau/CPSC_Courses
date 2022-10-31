@@ -99,6 +99,11 @@ void ServiceCenter::readFile(string filename) {
 
     read.close();
 
+    for (int i = 0; i < 10; i++) {
+        passTime();
+    cout << "Size of Finished: " << finished->size() << endl;
+    cout << "Students: " << students << endl;
+    }
     /*
     while (finished->size() != students) {  
         passTime();
@@ -189,6 +194,7 @@ void ServiceCenter::passTime() {
     //cout << "all passTime() for Office.cpp worked" << endl;
 
     while (!cashier->getFinished()->isEmpty()) {
+        //cout << "Cashier *finished is not empty" << endl;
         Customer* student = cashier->getFinished()->remove();
         if (student->isFinished()) finished->add(student);
         else {
@@ -196,6 +202,7 @@ void ServiceCenter::passTime() {
             if (dest == 'F') finAid->lineUp(student);
             else if (dest == 'R') registrar->lineUp(student);
         }
+        delete student;
     }
 
     while (!finAid->getFinished()->isEmpty()) {
@@ -206,6 +213,7 @@ void ServiceCenter::passTime() {
             if (dest == 'C') cashier->lineUp(student);
             else if (dest == 'R') registrar->lineUp(student);
         }
+        delete student;
     }
 
     while (!registrar->getFinished()->isEmpty()) {
@@ -216,6 +224,8 @@ void ServiceCenter::passTime() {
             if (dest == 'F') finAid->lineUp(student);
             else if (dest == 'C') cashier->lineUp(student);
         }
+        delete student;
+
     }
 }
 

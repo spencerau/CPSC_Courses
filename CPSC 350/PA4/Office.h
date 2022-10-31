@@ -27,6 +27,7 @@ public:
     ListQueue<Customer*>* getFinished();
 
     void printWindows();
+    void printFinishedList();
     
 private:
     char type;
