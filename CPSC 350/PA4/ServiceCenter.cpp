@@ -196,35 +196,37 @@ void ServiceCenter::passTime() {
     while (!cashier->getFinished()->isEmpty()) {
         //cout << "Cashier *finished is not empty" << endl;
         Customer* student = cashier->getFinished()->remove();
-        if (student->isFinished()) finished->add(student);
+        if (student->getOrder()->isEmpty()) {
+            finished->add(student);
+        }
         else {
             char dest = student->getOrder()->peek();
             if (dest == 'F') finAid->lineUp(student);
             else if (dest == 'R') registrar->lineUp(student);
         }
-        delete student;
+        //delete student;
     }
 
     while (!finAid->getFinished()->isEmpty()) {
         Customer* student = finAid->getFinished()->remove();
-        if (student->isFinished()) finished->add(student);
+        if (student->getOrder()->isEmpty()) finished->add(student);
         else {
             char dest = student->getOrder()->peek();
             if (dest == 'C') cashier->lineUp(student);
             else if (dest == 'R') registrar->lineUp(student);
         }
-        delete student;
+        //delete student;
     }
 
     while (!registrar->getFinished()->isEmpty()) {
         Customer* student = registrar->getFinished()->remove();
-        if (student->isFinished()) finished->add(student);
+        if (student->getOrder()->isEmpty()) finished->add(student);
         else {
             char dest = student->getOrder()->peek();
             if (dest == 'F') finAid->lineUp(student);
             else if (dest == 'C') cashier->lineUp(student);
         }
-        delete student;
+        //delete student;
 
     }
 }

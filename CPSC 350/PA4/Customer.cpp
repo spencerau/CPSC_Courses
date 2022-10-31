@@ -19,9 +19,6 @@ Customer::Customer(int finAid, int regist, int cash, ListQueue<char> *order) {
     this->curWait = 0;
     this->totalWait = 0;
     this->waiting = true;
-    this->timeNeeded = 0;
-    this->done = false;
-    this->fullyDone = false;
 }
 
 Customer::~Customer() {
@@ -52,48 +49,22 @@ char Customer::getDest() {
     return order->peek();
 }
 
-int Customer::getTimeNeeded() {
-    return timeNeeded;
-}
-
 int Customer::getAttending() {
     return attending;
 }
 
-bool Customer::isDone() {
-    return done;
-}
-
-bool Customer::isFinished() {
-    return fullyDone;
-}
-
-ListQueue<char>* Customer::getOrder() {
+ListQueue<char>*& Customer::getOrder() {
     return order;
-}
-
-void Customer::lineUp() {
-    done = false;
 }
 
 void Customer::attend() {
     waiting = false;
+    /*
     cout << "current office is " << order->peek() << endl;
     cout << "Student needs " << cash << " min at Cashier" << endl;
     cout << "Student needs " << finAid << " min at Fin Aid" << endl;
     cout << "Student needs " << regist << " min at Registrar" << endl;
-
-    switch (order->peek()) {
-        case 'C':
-            timeNeeded = cash;
-            break;
-        case 'F':
-            timeNeeded = finAid;
-            break;
-        case 'R':
-            timeNeeded = regist;
-            break;
-    }
+    */
 }
 
 void Customer::finish() {
@@ -102,8 +73,6 @@ void Customer::finish() {
     order->remove();
     attending = 0;
     waiting = true;
-    done = true;
-    if (order->isEmpty()) fullyDone = true;
 }
 
 void Customer::passTime() {

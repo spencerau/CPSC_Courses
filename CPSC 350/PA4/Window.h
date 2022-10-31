@@ -22,15 +22,18 @@ public:
     bool isOccupied();
     void finish();
     void passTime();
+    bool finished;
 private:
     char type;
     int students;
     int totalWait;
     int idle;
     int currWait;
-    int timeNeeded;
     int longest;
     bool occupied;
+
+    int currTime;
+    int timeNeeded;
 
     Customer *curStudent;
 };

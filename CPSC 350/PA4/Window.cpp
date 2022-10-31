@@ -14,6 +14,8 @@ Window::Window(char type) {
     this->timeNeeded = 0;
     this->longest = 0;
     this->occupied = false;
+    currTime = 0;
+    finished = false;
 }
 
 Window::~Window() {
@@ -24,8 +26,6 @@ void Window::setStudent(Customer *student) {
     this->curStudent = student;
     curStudent->attend();
     //cout << "Student.attend() worked" << endl;
-    timeNeeded = curStudent->getTimeNeeded();
-    /*
     switch (type) {
         case 'c':
             timeNeeded = student->getCash();
@@ -37,7 +37,6 @@ void Window::setStudent(Customer *student) {
             timeNeeded = student->getRegist();
             break;
     }
-    */
     occupied = true;
 }
 
@@ -65,6 +64,9 @@ void Window::finish() {
     totalWait += curStudent->getCurWait();
     curStudent->finish();
     occupied = false;
+    
+    currTime = 0;
+    finished = true;
 }
 
 void Window::passTime() {
@@ -75,13 +77,8 @@ void Window::passTime() {
     }
     // occupied
     else {
-        //cout << "before curStudent.passTime()" << endl;
         curStudent->passTime(); // its this line that is fucky
-        //cout << "Student at this Window passTime() worked" << endl;
-        if (curStudent->getAttending() >= timeNeeded) {
-            //cout << "before Customer.finish()" << endl;
-            finish();
-            //cout << "Student finished" << endl;
-        }
+        currTime++;
+        if (currTime >= timeNeeded) finish();
     }
 }

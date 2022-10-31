@@ -23,8 +23,8 @@ public:
     double getMeanIdle();
     int getLongestIdle();
     int getIdleOver5();
-    DblList<Window*>* getOffice();
-    ListQueue<Customer*>* getFinished();
+    DblList<Window*>*& getOffice();
+    ListQueue<Customer*>*& getFinished();
 
     void printWindows();
     void printFinishedList();

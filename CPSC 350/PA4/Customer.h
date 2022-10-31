@@ -18,14 +18,10 @@ public:
     int getRegist();
     int getCash();
     char getDest();
-    int getTimeNeeded();
     int getAttending();
-    ListQueue<char>* getOrder();
-    bool isDone();
-    bool isFinished();
+    ListQueue<char>*& getOrder();
 
     bool isWaiting();
-    void lineUp();
     void attend();
     void finish();
     void passTime();
@@ -40,9 +36,6 @@ private:
     int curWait;
     int totalWait;
     bool waiting;
-    int timeNeeded;
-    bool done;
-    bool fullyDone;
 
     ListQueue<char> *order;
 };

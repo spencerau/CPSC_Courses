@@ -28,7 +28,7 @@ Office::~Office() {
     delete office;
 }
 
-ListQueue<Customer*>* Office::getFinished() {
+ListQueue<Customer*>*& Office::getFinished() {
     return finished;
 }
 
@@ -71,13 +71,10 @@ void Office::attendStudent() {
 
 // this is when a student lines up in the back of the line; it calls attendStudent() if any windows are open
 void Office::lineUp(Customer *student) {
-    student->lineUp();
     line->add(student);
-    //cout << "Size of Line for " << type << " is " << line->size() << endl;
     if (occupWindows < maxWindows) {
         attendStudent();
     }
-    //cout << "Size of Line for " << type << " is " << line->size() << endl;
 
 }
 
@@ -85,26 +82,19 @@ void Office::lineUp(Customer *student) {
 void Office::passTime() {
     for (int i = 0; i < office->getSize(); i++) {
         cout << endl; 
-        cout << "Currently at Window " << i << " in Office " << type <<endl;
-        //cout << "Window " << i << " before passTime()" << endl;
+        //cout << "Currently at Window " << i << " in Office " << type <<endl;
         office->get(i)->passTime();
-        //cout << "Window " << i << " passTime() worked" << endl;
 
-        //cout << "Student was added to this window" << endl;
         if (office->get(i)->isOccupied()) {
-            //cout << "Before checking if line is empty" << endl;
             if (!line->isEmpty()) {
-                //cout << "Before setStudent()" << endl;
                 office->get(i)->setStudent(line->remove());
-                //cout << "Student successfulled attended at Window " << i << endl;
             }
-            // this bracket is causing a seg fault
-            if (office->get(i)->getStudent()->isFinished()) {
+            if (office->get(i)->finished) {
                 cout << "student is finished" << endl;
                 finished->add(office->get(i)->getStudent());
+                office->get(i)->finished = false;
             }
         }
-        //cout << "Finished at Window " << i << endl;
     }
     cout << endl;
     cout << "Office " << type << " has successfully passed 1 min" << endl;
