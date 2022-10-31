@@ -56,14 +56,14 @@ void ServiceCenter::readFile(string filename) {
     printNewLine();
 
     int current = 0;
-    int target;
+    int target = 0;
     while (getline(read, line)) {
         //cout << "This should be the time " << line << endl;
         target = stoi(line);
         //cout << "target time is " << target << endl;
         while (current < target) {
             cout << "current time is " << current << endl;
-                cout << "target time is " << target << endl;
+            cout << "target time is " << target << endl;
 
             
             passTime();
@@ -99,10 +99,13 @@ void ServiceCenter::readFile(string filename) {
 
     read.close();
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 12; i++) {
+        //cout << endl << "Current time is " << current << endl;
+        //cout << "target time is " << target << endl;
+        //current++;
         passTime();
-    cout << "Size of Finished: " << finished->size() << endl;
-    cout << "Students: " << students << endl;
+        cout << "Size of Finished: " << finished->size() << endl;
+        cout << "Students: " << students << endl;
     }
     /*
     while (finished->size() != students) {  

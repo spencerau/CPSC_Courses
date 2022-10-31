@@ -15,7 +15,7 @@ Customer::Customer(int finAid, int regist, int cash, ListQueue<char> *order) {
     this->cash = cash;
     this->order = order;
     
-    this->attending = 0;
+    this->attendTime = 0;
     this->curWait = 0;
     this->totalWait = 0;
     this->waiting = true;
@@ -49,8 +49,8 @@ char Customer::getDest() {
     return order->peek();
 }
 
-int Customer::getAttending() {
-    return attending;
+int Customer::getAttendTime() {
+    return attendTime;
 }
 
 ListQueue<char>*& Customer::getOrder() {
@@ -71,7 +71,7 @@ void Customer::finish() {
     totalWait += curWait;
     curWait = 0;
     order->remove();
-    attending = 0;
+    attendTime = 0;
     waiting = true;
 }
 
@@ -81,7 +81,7 @@ void Customer::passTime() {
         cout << "Student is Waiting" << endl;
     }
     else {
-        attending++;
-        cout << "Student is being Attended To" << endl;
+        attendTime++;
+        cout << "Student is being Attended To at Window " << order->peek() << endl;
     }
 }

@@ -27,13 +27,13 @@ void Window::setStudent(Customer *student) {
     curStudent->attend();
     //cout << "Student.attend() worked" << endl;
     switch (type) {
-        case 'c':
+        case 'C':
             timeNeeded = student->getCash();
             break;
-        case 'f':
+        case 'F':
             timeNeeded = student->getFinAid();
             break;
-        case 'r':
+        case 'R':
             timeNeeded = student->getRegist();
             break;
     }
@@ -78,6 +78,8 @@ void Window::passTime() {
     // occupied
     else {
         curStudent->passTime(); // its this line that is fucky
+        cout << "Current Time at Window = " << currTime << endl;
+        cout << "Time Needed at Window = " << timeNeeded << endl;
         currTime++;
         if (currTime >= timeNeeded) finish();
     }

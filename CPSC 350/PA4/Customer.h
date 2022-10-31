@@ -18,7 +18,7 @@ public:
     int getRegist();
     int getCash();
     char getDest();
-    int getAttending();
+    int getAttendTime();
     ListQueue<char>*& getOrder();
 
     bool isWaiting();
@@ -32,7 +32,7 @@ private:
     int cash;
     char office;
 
-    int attending;
+    int attendTime;
     int curWait;
     int totalWait;
     bool waiting;

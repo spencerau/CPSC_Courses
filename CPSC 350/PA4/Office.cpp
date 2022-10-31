@@ -85,19 +85,20 @@ void Office::passTime() {
         //cout << "Currently at Window " << i << " in Office " << type <<endl;
         office->get(i)->passTime();
 
-        if (office->get(i)->isOccupied()) {
+        if (!office->get(i)->isOccupied()) {
+            //cout << "dumb fuck changing occupied to false too early" << endl;
             if (!line->isEmpty()) {
                 office->get(i)->setStudent(line->remove());
             }
             if (office->get(i)->finished) {
-                cout << "student is finished" << endl;
+                cout << "Student is finished at Office " << type << endl;
                 finished->add(office->get(i)->getStudent());
                 office->get(i)->finished = false;
             }
         }
     }
     cout << endl;
-    cout << "Office " << type << " has successfully passed 1 min" << endl;
+    //cout << "Office " << type << " has successfully passed 1 min" << endl;
     printFinishedList();
     cout << "---------------------------------------------------------------------" << endl;
 }
