@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Customer::Customer(int finAid, int regist, int cash, ListQueue<char> *order) {
+Customer::Customer(int finAid, int regist, int cash, ListQueue<char> *order, int num) {
     this->finAid = finAid;
     this->regist = regist;
     this->cash = cash;
@@ -19,6 +19,8 @@ Customer::Customer(int finAid, int regist, int cash, ListQueue<char> *order) {
     this->curWait = 0;
     this->totalWait = 0;
     this->waiting = true;
+
+    this->num = num;
 }
 
 Customer::~Customer() {
@@ -71,6 +73,9 @@ void Customer::finish() {
     totalWait += curWait;
     curWait = 0;
     order->remove();
+    if (order->isEmpty()) {
+        cout << "STUDENT " << num << " IS DONE, ORDER IS EMPTY, AND THIS IS CALLED IN THE CUSTOMER.CPP CLASS" << endl;
+    }
     attendTime = 0;
     waiting = true;
 }
@@ -78,10 +83,10 @@ void Customer::finish() {
 void Customer::passTime() {
     if (waiting) {
         curWait++;
-        cout << "Student is Waiting" << endl;
+        cout << "Student " << num << " is Waiting" << endl;
     }
     else {
         attendTime++;
-        cout << "Student is being Attended To at Window " << order->peek() << endl;
+        cout << "Student " << num << " is being Attended To at Window " << order->peek() << endl;
     }
 }

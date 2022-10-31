@@ -36,6 +36,7 @@ private:
     int occupWindows;
     int totalWait;
     int numStudents;
+    int longestWait;
 
     ListQueue<Customer*> *line;
     ListQueue<Customer*> *finished;

@@ -9,10 +9,10 @@ using namespace std;
 
 ServiceCenter::ServiceCenter(string filename) {
     studentLine = new ListQueue<Customer*>();
-    finished = new ListQueue<Customer*>();
-    students = 0;
+    finished = new DblList<Customer*>();
+    numStudents = 0;
     readFile(filename);
-    waitOver10 = 0;
+    time = 0;
 }
 
 ServiceCenter::~ServiceCenter() {
@@ -55,32 +55,24 @@ void ServiceCenter::readFile(string filename) {
     cout << "The Financial Aid Office has " << windows << " windows." << endl;
     printNewLine();
 
-    int current = 0;
+    //int current = 0;
     int target = 0;
     while (getline(read, line)) {
         //cout << "This should be the time " << line << endl;
         target = stoi(line);
         //cout << "target time is " << target << endl;
-        while (current < target) {
-            cout << "current time is " << current << endl;
-            cout << "target time is " << target << endl;
-
-            
+        while (time < target) {
             passTime();
-            current++;
+            cout << "target time is " << target << endl;
         }
-        //current = target;
-        cout << "Time: " << current << endl;
-
         getline(read, line);
         //cout << "This should be the number of students " << line << endl;
-        int numStudents = stoi(line);
-        cout << "The will be " << numStudents << " students joining the queue at this time." << endl;
+        int addStudents = stoi(line);
+        cout << "The will be " << addStudents << " students joining the queue at this time." << endl;
     
-        for (int i = 0; i < numStudents; i++) {
+        for (int i = 0; i < addStudents; i++) {
             getline(read, line);
             Customer *student = readLine(line);
-            students++;
             switch (student->getDest()) {
                 case 'F':
                     finAid->lineUp(student);
@@ -92,26 +84,32 @@ void ServiceCenter::readFile(string filename) {
                     cashier->lineUp(student);
                     break;
             }
+            numStudents++;
             printNewLine();
         }
     }
     // this block of bullshit is temporary because File I/O is some big brain shit
 
     read.close();
-
+    /*
     for (int i = 0; i < 12; i++) {
         //cout << endl << "Current time is " << current << endl;
         //cout << "target time is " << target << endl;
         //current++;
         passTime();
-        cout << "Size of Finished: " << finished->size() << endl;
+        cout << "Size of Finished: " << finished->getSize() << endl;
         cout << "Students: " << students << endl;
     }
-    /*
-    while (finished->size() != students) {  
-        passTime();
-    }
     */
+
+    while (finished->getSize() != numStudents-1) { 
+        passTime();
+        cout << "Size of Finished: " << finished->getSize() << endl;
+        cout << "Num Students: " << numStudents << endl; 
+    }
+    
+
+   printFinished();
 }
 
 Customer* ServiceCenter::readLine(string line) {
@@ -134,7 +132,7 @@ Customer* ServiceCenter::readLine(string line) {
     char third;
     fullLine >> third;
 
-    cout << "Student " << ++students << " Destination Order: " << first << " - " << second << " - " << third << endl;
+    cout << "Student " << numStudents << " Destination Order: " << first << " - " << second << " - " << third << endl;
     ListQueue<char> *order = new ListQueue<char>();
     order->add(first);
     order->add(second);
@@ -177,57 +175,73 @@ Customer* ServiceCenter::readLine(string line) {
             break;
     }
 
-    Customer *student = new Customer(finAid, regist, cash, order);
-    cout << "Student " << students << " needs: " << student->getFinAid() << " min at FinAid, " << student->getRegist() << " min at Regist, " 
+    Customer *student = new Customer(finAid, regist, cash, order, numStudents);
+    cout << "Student " << numStudents << " needs: " << student->getFinAid() << " min at FinAid, " << student->getRegist() << " min at Regist, " 
     << student->getCash() << " min at Cashier." << endl;
     return student;
 }
 
+void ServiceCenter::printFinished() {
+    cout << "Finished List in ServiceCenter" << endl;
+    for (int i = 0; i < finished->getSize(); i++) {
+        cout << "Index " << i << ": Student " << finished->get(i)->num << endl;
+    }
+}
+
 void ServiceCenter::passTime() {
     //for (int i = current; i < target; i++) {
+    cout << "CURRENT TIME: " << time << endl;
+    time++;
     cashier->printWindows();
     finAid->printWindows();
     registrar->printWindows();
     cashier->passTime();
-    //cout << "CASH passtime worked" << endl;
     finAid->passTime();
-    //cout << "FinAid passtime worked" << endl;
     registrar->passTime();
-    //cout << "Regist passTime worked" << endl;
-    //cout << "all passTime() for Office.cpp worked" << endl;
 
     while (!cashier->getFinished()->isEmpty()) {
-        //cout << "Cashier *finished is not empty" << endl;
         Customer* student = cashier->getFinished()->remove();
         if (student->getOrder()->isEmpty()) {
-            finished->add(student);
+            cout << "THIS DUDE DONE" << endl;
+            finished->addBack(student);
         }
         else {
             char dest = student->getOrder()->peek();
             if (dest == 'F') finAid->lineUp(student);
             else if (dest == 'R') registrar->lineUp(student);
+            else if (dest == 'C') finished->addBack(student);
         }
         //delete student;
     }
 
     while (!finAid->getFinished()->isEmpty()) {
         Customer* student = finAid->getFinished()->remove();
-        if (student->getOrder()->isEmpty()) finished->add(student);
+        cout << "THIS SHOULD BE EMPTY: " << student->getOrder()->peek() << endl;
+        if (student->getOrder()->isEmpty()) {
+            cout << "THIS MOTHERFUCKER DONE" << endl;
+            finished->addBack(student);
+        }
         else {
             char dest = student->getOrder()->peek();
             if (dest == 'C') cashier->lineUp(student);
             else if (dest == 'R') registrar->lineUp(student);
+            else if (dest == 'F') finished->addBack(student);
         }
         //delete student;
     }
 
     while (!registrar->getFinished()->isEmpty()) {
         Customer* student = registrar->getFinished()->remove();
-        if (student->getOrder()->isEmpty()) finished->add(student);
+        if (student->getOrder()->isEmpty()) {
+            cout << "HE DONE N SHEIT" << endl;
+            finished->addBack(student);
+            cout << "THE SIZE OF FINISHED IN SERVICECENTER IS " << finished << endl;
+        }
         else {
             char dest = student->getOrder()->peek();
             if (dest == 'F') finAid->lineUp(student);
             else if (dest == 'C') cashier->lineUp(student);
+            else if (dest == 'R') finished->addBack(student);
         }
         //delete student;
 
@@ -236,11 +250,11 @@ void ServiceCenter::passTime() {
 
 void ServiceCenter::printResult() {
     printMeanWait();
-    //printLongestWait();
-    //printWaitOver10();
-    //printMeanIdle();
-    //printLongestIdle();
-    //printIdleOver5();
+    printLongestWait();
+    printWaitOver10();
+    printMeanIdle();
+    printLongestIdle();
+    printIdleOver5();
 }
 
 // The mean student wait time for each office.
@@ -263,9 +277,16 @@ void ServiceCenter::printLongestWait() {
     
 // The number of students waiting over 10 minutes total across all offices.
 void ServiceCenter::printWaitOver10() {
+    int waitOver10 = 0;
+    for (int i = 0; i < finished->getSize(); i++) {
+        if (finished->get(i)->getTotalWait() >= 10) {
+            waitOver10 += finished->get(i)->getTotalWait();
+        }
+    }
     cout << "Number of Students Waiting over 10 Min: " << waitOver10 << endl;
     printNewLine();
 }
+
 // The mean window idle time for each office
 void ServiceCenter::printMeanIdle() {
     cout << "Average Window Idle Time: " << endl;

@@ -9,7 +9,7 @@ using namespace std;
 
 class Customer {
 public:
-    Customer(int finAid, int regist, int cash, ListQueue<char> *order);
+    Customer(int finAid, int regist, int cash, ListQueue<char> *order, int num);
     ~Customer();
 
     int getCurWait();
@@ -25,7 +25,8 @@ public:
     void attend();
     void finish();
     void passTime();
-
+    
+    int num;
 private:
     int finAid;
     int regist;

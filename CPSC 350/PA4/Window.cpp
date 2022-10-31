@@ -73,7 +73,7 @@ void Window::passTime() {
     // is idle
     if (!occupied) {
         idle++;
-        cout << "Window at Office " << type << " is currently idle" << endl;
+        //cout << "Window at Office " << type << " is currently idle" << endl;
     }
     // occupied
     else {

@@ -35,6 +35,7 @@ ListQueue<Customer*>*& Office::getFinished() {
 void Office::printFinishedList() {
     if (finished->isEmpty()) cout << "Finished is Empty" << endl;
     else {
+        cout << "Finished List" << endl;
         for (int i = 0; i < finished->size(); i++) {
             cout << "Index " << i << ": Student" << endl;
         }
@@ -61,6 +62,10 @@ void Office::printWindows() {
 void Office::attendStudent() {
     if (occupWindows == maxWindows) return;
     occupWindows++;
+    totalWait += line->peek()->getCurWait();
+    if (line->peek()->getCurWait() > longestWait) {
+        longestWait = line->peek()->getCurWait();
+    }
     for (int i = 0; i < office->getSize(); i++) {
         if (!office->get(i)->isOccupied()) {
             office->get(i)->setStudent(line->remove());
@@ -75,7 +80,7 @@ void Office::lineUp(Customer *student) {
     if (occupWindows < maxWindows) {
         attendStudent();
     }
-
+    numStudents++;
 }
 
 // need to fix it so that ServiceCenter.cpp can take a Customer *student from Office.cpp 
@@ -97,64 +102,54 @@ void Office::passTime() {
             }
         }
     }
-    cout << endl;
+    //cout << endl;
     //cout << "Office " << type << " has successfully passed 1 min" << endl;
-    printFinishedList();
+    //printFinishedList();
     cout << "---------------------------------------------------------------------" << endl;
 }
 
 double Office::getMeanWait() {
-    Window *window;
-    int total = 0;
-    //cout << "Number of Students: " << numStudents << endl;
-    printWindows();
-    for (int i = 0; i < office->getSize(); i++) {
-        total += office->get(i)->getTotalWait();
-    }
-    return total / numStudents;
+    //printWindows();
+    //cout << "Total Wait: " << totalWait << endl;
+    //cout << "Num Students " << numStudents << endl;
+    return totalWait / numStudents;
 }
 
 int Office::getLongestWait() {
-    Window *window;
-    int longest = 0;
-    // iterate through Office DLL
-    for (int i = 0; i < office->getSize(); i++) {
-        window = office->get(i);
-        if (window->getLongest() > longest) longest = window->getLongest();
-    }
-    delete window;
-    return longest;
+    return longestWait;
 }
 
 double Office::getMeanIdle() {
-    Window *window;
+    //Window *window;
     int total = 0;
     for (int i = 0; i < office->getSize(); i++) {
-        window = office->get(i);
-        total += window->getIdle();
+        //window = office->get(i);
+        total += office->get(i)->getIdle();
     }
-    delete window;
+    //delete window;
     return total / maxWindows;
 }
 
 int Office::getLongestIdle() {
-    Window *window;
-    int idle = 0;
+    //Window *window;
+    int max = 0;
     for (int i = 0; i < office->getSize(); i++) {
-        window = office->get(i);
-        if (window->getIdle() > idle) idle = window->getIdle();
+        //window = office->get(i);
+        if (office->get(i)->getIdle() > max) {
+            max = office->get(i)->getIdle();
+        }
     }
-    delete window;
-    return idle;
+    //delete window;
+    return max;
 }
 
 int Office::getIdleOver5() {
-    Window *window;
+    //Window *window;
     int idleOver5 = 0;
     for (int i = 0; i < office->getSize(); i++) {
-        window = office->get(i);
-        if (window->getIdle() >= 5) idleOver5++;
+        //window = office->get(i);
+        if (office->get(i)->getIdle() >= 5) idleOver5++;
     }
-    delete window;
+    //delete window;
     return idleOver5;
 }

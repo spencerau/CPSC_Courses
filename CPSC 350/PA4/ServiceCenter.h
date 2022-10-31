@@ -25,15 +25,18 @@ public:
     void printMeanIdle();
     void printLongestIdle();
     void printIdleOver5();
+
+    void printFinished();
 private:
     Office *cashier;
     Office *finAid;
     Office *registrar;
-    int students;
-    int waitOver10;
+    int numStudents;
 
     ListQueue<Customer*> *studentLine;
-    ListQueue<Customer*> *finished;
+    DblList<Customer*> *finished;
+
+    int time;
 };
 
 #endif
