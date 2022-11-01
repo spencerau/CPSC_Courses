@@ -1,5 +1,41 @@
+/*
+Spencer Au
+ID: 002385256
+spau@chapman.edu
+CPSC 350 - Section 2
+PA4
+
+CPP File for ServiceCenter that represents a Service Center with 3 Offices
+
+
+ServiceCenter(string filename) - Constructor that takes an input filename and initializes variables, calls readFile(filename)
+~ServiceCenter() - Destructor
+
+void readFile(string filename) - Function that handles File I/O for reading from the txt file. It creates 3 Offices with respective amount of 
+Windows from the first 3 lines, and then calls passTime() for the target time, stores the amount of students that are going to be arriving, and 
+calls readLine(line) based on number of students that creates a new Customer, and calls Office.lineUp(student) for the respective office. It will call
+passTime() until all students have finished.
+
+void passTime() - Simulates a single minute passing in the Service Center. Calls passTime() on each of the 3 offices, and if any of the offices have
+finished students, it pops the student, and if the student has offices left to go to, it calls Office.lineUp() at the respective office, else if the 
+student is fully finished, then it adds the studet to finished
+
+Customer* readLine(string line) - Takes a string line and returns a Customer created from that line; Format: time1 time2 time3 office1 office2 office3
+
+void printMeanWait()- Prints the mean student wait time for each office by calling Office.getMeanWait()
+void printLongestWait() -Prints the longest student wait time for each office by calling Office.getLongestWait()
+void printWaitOver10() - Prints the number of students waiting over 10 minutes total across all offices by iterating through finished
+void printMeanIdle() - Prints the mean window idle time for each office by calling Office.getMeanIdle()
+void printLongestIdle() - Prints the longest window idle time for each office by calling Office.getLongestIdle()
+void printIdleOver5() - Prints the number of windows idle for over 5 minutes across all offices by calling Office.getIdleOver5()
+
+void printResult() - Function that prints out the 6 above functions to display
+
+void printFinished() - Print Function that prints out the finished ListQ of students 
+void printNewLine() - Prints out a Line to separate output
+*/
+
 #include <iostream>
-//#include "Office.h"
 #include "ServiceCenter.h"
 #include <fstream>
 #include <sstream>
@@ -7,6 +43,9 @@
 
 using namespace std;
 
+/*
+ServiceCenter(string filename) - Constructor that takes an input filename and initializes variables, calls readFile(filename)
+*/
 ServiceCenter::ServiceCenter(string filename) {
     studentLine = new ListQueue<Customer*>();
     finished = new DblList<Customer*>();
@@ -23,6 +62,12 @@ ServiceCenter::~ServiceCenter() {
     delete finished;
 }
 
+/*
+void readFile(string filename) - Function that handles File I/O for reading from the txt file. It creates 3 Offices with respective amount of 
+Windows from the first 3 lines, and then calls passTime() for the target time, stores the amount of students that are going to be arriving, and 
+calls readLine(line) based on number of students that creates a new Customer, and calls Office.lineUp(student) for the respective office. It will call
+passTime() until all students have finished.
+*/
 void ServiceCenter::readFile(string filename) {
     ifstream read(filename);
     // this is the File I/O bullshit
@@ -63,12 +108,13 @@ void ServiceCenter::readFile(string filename) {
         //cout << "target time is " << target << endl;
         while (time < target) {
             passTime();
-            cout << "target time is " << target << endl;
+            //cout << "Target time is " << target << endl;
         }
         getline(read, line);
         //cout << "This should be the number of students " << line << endl;
         int addStudents = stoi(line);
         cout << "The will be " << addStudents << " students joining the queue at this time." << endl;
+        cout << endl;
     
         for (int i = 0; i < addStudents; i++) {
             getline(read, line);
@@ -85,33 +131,23 @@ void ServiceCenter::readFile(string filename) {
                     break;
             }
             numStudents++;
-            printNewLine();
+            cout << endl;
         }
+        printNewLine();
     }
-    // this block of bullshit is temporary because File I/O is some big brain shit
-
     read.close();
-    /*
-    for (int i = 0; i < 12; i++) {
-        //cout << endl << "Current time is " << current << endl;
-        //cout << "target time is " << target << endl;
-        //current++;
+    while (finished->getSize() != numStudents) { 
         passTime();
-        cout << "Size of Finished: " << finished->getSize() << endl;
-        cout << "Students: " << students << endl;
+        //cout << "Size of Finished: " << finished->getSize() << endl;
+        //cout << "Num Students: " << numStudents << endl; 
     }
-    */
-
-    while (finished->getSize() != numStudents-1) { 
-        passTime();
-        cout << "Size of Finished: " << finished->getSize() << endl;
-        cout << "Num Students: " << numStudents << endl; 
-    }
-    
-
-   printFinished();
+   //printFinished();
+   printNewLine();
 }
 
+/*
+Customer* readLine(string line) - Takes a string line and returns a Customer created from that line; Format: time1 time2 time3 office1 office2 office3
+*/
 Customer* ServiceCenter::readLine(string line) {
     stringstream fullLine(line);
     int a;
@@ -188,6 +224,11 @@ void ServiceCenter::printFinished() {
     }
 }
 
+/*
+void passTime() - Simulates a single minute passing in the Service Center. Calls passTime() on each of the 3 offices, and if any of the offices have
+finished students, it pops the student, and if the student has offices left to go to, it calls Office.lineUp() at the respective office, else if the 
+student is fully finished, then it adds the studet to finished
+*/
 void ServiceCenter::passTime() {
     //for (int i = current; i < target; i++) {
     cout << "CURRENT TIME: " << time << endl;
@@ -202,7 +243,6 @@ void ServiceCenter::passTime() {
     while (!cashier->getFinished()->isEmpty()) {
         Customer* student = cashier->getFinished()->remove();
         if (student->getOrder()->isEmpty()) {
-            cout << "THIS DUDE DONE" << endl;
             finished->addBack(student);
         }
         else {
@@ -216,9 +256,8 @@ void ServiceCenter::passTime() {
 
     while (!finAid->getFinished()->isEmpty()) {
         Customer* student = finAid->getFinished()->remove();
-        cout << "THIS SHOULD BE EMPTY: " << student->getOrder()->peek() << endl;
+        //cout << "THIS SHOULD BE EMPTY: " << student->getOrder()->peek() << endl;
         if (student->getOrder()->isEmpty()) {
-            cout << "THIS MOTHERFUCKER DONE" << endl;
             finished->addBack(student);
         }
         else {
@@ -233,9 +272,8 @@ void ServiceCenter::passTime() {
     while (!registrar->getFinished()->isEmpty()) {
         Customer* student = registrar->getFinished()->remove();
         if (student->getOrder()->isEmpty()) {
-            cout << "HE DONE N SHEIT" << endl;
             finished->addBack(student);
-            cout << "THE SIZE OF FINISHED IN SERVICECENTER IS " << finished << endl;
+            //cout << "THE SIZE OF FINISHED IN SERVICECENTER IS " << finished << endl;
         }
         else {
             char dest = student->getOrder()->peek();
@@ -243,8 +281,6 @@ void ServiceCenter::passTime() {
             else if (dest == 'C') cashier->lineUp(student);
             else if (dest == 'R') finished->addBack(student);
         }
-        //delete student;
-
     }
 }
 
@@ -257,7 +293,9 @@ void ServiceCenter::printResult() {
     printIdleOver5();
 }
 
-// The mean student wait time for each office.
+/*
+void printMeanWait()- Prints the mean student wait time for each office by calling Office.getMeanWait()
+*/
 void ServiceCenter::printMeanWait() {
     cout << "Average Wait Time:" << endl;
     cout << "Cashier: " << cashier->getMeanWait() << endl;
@@ -266,7 +304,9 @@ void ServiceCenter::printMeanWait() {
     printNewLine();
 }
 
-// The longest student wait time for each office.
+/*
+void printLongestWait() -Prints the longest student wait time for each office by calling Office.getLongestWait()
+*/
 void ServiceCenter::printLongestWait() {
     cout << "Longest Wait: " << endl;
     cout << "Cashier: " << cashier->getLongestWait() << endl;
@@ -275,7 +315,9 @@ void ServiceCenter::printLongestWait() {
     printNewLine();
 }
     
-// The number of students waiting over 10 minutes total across all offices.
+/*
+void printWaitOver10() - Prints the number of students waiting over 10 minutes total across all offices by iterating through finished
+*/
 void ServiceCenter::printWaitOver10() {
     int waitOver10 = 0;
     for (int i = 0; i < finished->getSize(); i++) {
@@ -287,7 +329,9 @@ void ServiceCenter::printWaitOver10() {
     printNewLine();
 }
 
-// The mean window idle time for each office
+/*
+void printMeanIdle() - Prints the mean window idle time for each office by calling Office.getMeanIdle()
+*/
 void ServiceCenter::printMeanIdle() {
     cout << "Average Window Idle Time: " << endl;
     cout << "Cashier: " << cashier->getMeanIdle() << endl;
@@ -296,7 +340,9 @@ void ServiceCenter::printMeanIdle() {
     printNewLine();
 }
 
-// The longest window idle time for each office
+/*
+void printLongestIdle() - Prints the longest window idle time for each office by calling Office.getLongestIdle()
+*/
 void ServiceCenter::printLongestIdle() {
     cout << "Longest Window Idle Time: " << endl;
     cout << "Cashier: " << cashier->getLongestIdle() << endl;
@@ -305,7 +351,9 @@ void ServiceCenter::printLongestIdle() {
     printNewLine();
 }
 
-// Number of windows idle for over 5 minutes across all offices.
+/*
+void printIdleOver5() - Prints the number of windows idle for over 5 minutes across all offices by calling Office.getIdleOver5()
+*/
 void ServiceCenter::printIdleOver5() {
     int amount = cashier->getIdleOver5();
     amount += registrar->getIdleOver5();
@@ -314,5 +362,5 @@ void ServiceCenter::printIdleOver5() {
 }
 
 void ServiceCenter::printNewLine() {
-    cout << "----------------------------------------------------------------------------------------------------------------------------" << endl;
+    cout << "-------------------------------------------------------------------" << endl;
 }
