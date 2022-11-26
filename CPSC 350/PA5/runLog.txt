@@ -1,0 +1,14 @@
+Student Name: Spencer
+Student ID: 12345
+Level: Junior
+Major: Computer Science
+GPA: 3.5
+Advisor: 123
+
+Name: Linstead
+ID: 123
+Level: Prof
+Department: CPSC
+Advisees: 
+12345
+
