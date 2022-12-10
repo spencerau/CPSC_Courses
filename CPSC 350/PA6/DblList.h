@@ -209,7 +209,7 @@ template <typename T>
 void DblList<T>::print(){
   ListNode<T>* current = m_front;
   while(current!=NULL){
-    cout << current->m_data << endl;
+    cout << current->m_data->weight << endl;
     current = current->m_next;
   }
 }

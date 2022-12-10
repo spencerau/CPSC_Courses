@@ -58,7 +58,7 @@ void PQueue<T>::add(T data){
   ListNode<T>* newNode = new ListNode<T>(data);
   int currIdx = 0;
   ListNode<T>* currNode = DblList<T>::m_front;
-  while(currNode!=NULL && currNode->m_data < data){
+  while(currNode!=NULL && currNode->m_data->weight < data->weight) {
     currNode = currNode->m_next;
     ++currIdx;
   }

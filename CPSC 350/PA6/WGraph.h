@@ -1,3 +1,12 @@
+/*
+Spencer Au
+ID: 002385256
+spau@chapman.edu
+CPSC 350 - Section 2
+PA6
+
+*/
+
 #ifndef WGraph_H
 #define WGraph_H
 
@@ -8,11 +17,19 @@
 #include <iostream>
 #include <limits>
 #include "ListStack.h"
+#include "PQueue.h"
 
 //an unweighted, undirected WGraph implemented with adjacency matrix
 //fixed size
 
 typedef unsigned int VertexID;
+
+// Data structure to store a graph edge
+struct Edge {
+	double weight;
+	int from;
+	int to;
+};
 
 class WGraph{
 public:
@@ -25,14 +42,17 @@ public:
     double cheapestCost(VertexID i, VertexID j);
     void calcFW();
     void computeMST();
-	void printMST();
-	bool isCycle();
+	void printMatrix(double **matrix);
 
 private:
 	double **MST;
 	double** m_adj;
 	double** m_conn;
 	unsigned int m_size; //nodes in WGraph (fixed)
+
+	void updateConn(VertexID i, VertexID j);
+	void printMST();
+ 
 
 };
 

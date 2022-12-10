@@ -1,5 +1,15 @@
+/*
+Spencer Au
+ID: 002385256
+spau@chapman.edu
+CPSC 350 - Section 2
+PA6
+
+*/
+
 #include "WGraph.h"
-#include "algorithm"
+//#include <Algorithm>
+//#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -24,6 +34,7 @@ WGraph::WGraph(unsigned int sz){
 		for(int j = 0; j < m_size; ++j){
 			m_adj[i][j] = std::numeric_limits<double>::max();
 			m_conn[i][j] = std::numeric_limits<double>::max();
+			m_conn[i][j] = 0;
 			MST[i][j] = 0;
 		}
 	}
@@ -82,32 +93,96 @@ double WGraph::cheapestCost(VertexID i, VertexID j){
     return m_conn[i][j];
 }
 
+void WGraph::updateConn(VertexID i, VertexID j) {
+	m_conn[i][j] = 1;
+	m_conn[j][i] = 1;
+	for (int a = 0; a < m_size; a++) {
+		if (m_conn[i][a] == 1) {
+			m_conn[j][a] = 1;
+			m_conn[a][j] = 1;
+		}
+		if (m_conn[j][a] == 1) {
+			m_conn[i][a] = 1;
+			m_conn[i][a] = 1;
+		}
+	}
+}
+/*
+int WGraph::find(int i)
+    {
+        if (parent[i] == -1)
+            return i;
+ 
+        return parent[i] = find(parent[i]);
+    }
+*/
+
 void WGraph::computeMST() {
-	//double** sortedGraph = m_adj;
-	//sortedGraph.sort();
-	ListStack<double> *visited = new ListStack<double>();
-	double min = 0;
+	cout << "Original Matrix: " << endl;
+	printMatrix(m_adj);
+
+	double mst = 0;
 	double lowest = numeric_limits<double>::max();
 	int I;
 	int J;
-	for (int a = 0; a < m_size; a++) {
+
+	PQueue<Edge*> *allEdges = new PQueue<Edge*>(true);
+	for (int i = 0; i < m_size; i++) {
+		for (int j = 0; j < m_size; j++) {
+			if (m_adj[i][j] != 0) {
+				Edge *edge = new Edge();
+				edge->from = i;
+				edge->to = j;
+				edge->weight = m_adj[i][j];
+				allEdges->add(edge);
+			}
+		}
+	}
+	cout << "PQueue: " << endl;
+	allEdges->print();
+	cout << endl;
+	//sort(allEdges, );
+
+	// change the bounds for this
+	for (int a = 0; a < m_size; a++) { // goes through all nodes
 		for (int i = 0; i < m_size; i++) {
 			for (int j = i+1; j < m_size; j++) {
-				if (m_adj[i][j] < numeric_limits<double>::max()) {
-					lowest = m_adj[i][j];
-					I = i;
-					J = j;
+				if (m_adj[i][j] < lowest && m_adj[i][j] != 0) {
+					// check if there is a cycle
+					if (m_conn[i][j] != 1) {
+						updateConn(i, j);
+						lowest = m_adj[i][j];
+						I = i;
+						J = j;
+					}
 				}
 			}
 		}
 		MST[I][J] = lowest;
-		min += lowest;
+		mst += lowest;
 	}
-	cout << "MST Cost: " << min << endl;
-	printMST();
+	cout << "MST Cost: " << mst << endl;
+	cout << endl;
+	cout << "MST Matrix: "<< endl;
+	printMatrix(MST);
+	//printMST();
+}
+
+void WGraph::printMatrix(double **matrix) {
+	for (int i = 0; i < m_size; i++) {
+		for (int j = 0; j < m_size; j++) {
+			cout << matrix[i][j] << " ";
+		}
+		cout << endl;
+	}
 }
 
 void WGraph::printMST() {
-
+	for (int i = 0; i < m_size; i++) {
+		for (int j = 0; j < m_size; j++) {
+			cout << MST[i][j] << " ";
+		}
+		cout << endl;
+	}
 }
 
