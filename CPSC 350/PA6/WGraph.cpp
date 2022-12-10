@@ -104,11 +104,6 @@ void WGraph::updateConn(VertexID i, VertexID j) {
 			m_conn[a][i] = 1;
 		}
 	}
-	/*
-	cout << endl;
-	printMatrix(m_conn);
-	cout << endl;
-	*/
 }
 
 void WGraph::computeMST() {
@@ -120,11 +115,9 @@ void WGraph::computeMST() {
 	int I;
 	int J;
 
-	//bool **visited = new bool*[m_size];
 	PQueue<Edge*> *allEdges = new PQueue<Edge*>(true);
 	for (int i = 0; i < m_size; i++) {
-		for (int j = 0; j < m_size; j++) {
-			//visited[i][j] = false
+		for (int j = i+1; j < m_size; j++) {
 			if (m_adj[i][j] != 0) {
 				Edge *edge = new Edge();
 				edge->from = i;

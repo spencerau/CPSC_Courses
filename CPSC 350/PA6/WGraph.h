@@ -16,7 +16,6 @@ PA6
 #include <stack>
 #include <iostream>
 #include <limits>
-#include "ListStack.h"
 #include "PQueue.h"
 
 //an unweighted, undirected WGraph implemented with adjacency matrix
