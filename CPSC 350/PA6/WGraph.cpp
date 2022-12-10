@@ -103,6 +103,8 @@ void WGraph::computeMST() {
 		MST[I][J] = lowest;
 		min += lowest;
 	}
+	cout << "MST Cost: " << min << endl;
+	printMST();
 }
 
 void WGraph::printMST() {

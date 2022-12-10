@@ -26,6 +26,7 @@ public:
     void calcFW();
     void computeMST();
 	void printMST();
+	bool isCycle();
 
 private:
 	double **MST;
